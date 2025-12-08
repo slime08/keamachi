@@ -67,16 +67,16 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
 
       const apiData: Facility[] = response.data || []
       const mockData: Facility[] = [
-        { id: 1, name: 'サンシャイン福祉センター', description: '訪問介護サービスを提供', location: '東京都渋谷区', service_type: '訪問介護', rating: 4.8, reviews: 24, availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' } },
-        { id: 2, name: 'ケアホーム山田', description: 'グループホーム', location: '東京都新宿区', service_type: 'グループホーム', rating: 4.6, reviews: 18, availability: { mon: 'closed', tue: 'limited', wed: 'open', thu: 'open', fri: 'open', sat: 'limited', sun: 'closed' } },
-        { id: 3, name: 'デイサービス太陽', description: 'デイサービス', location: '東京都渋谷区', service_type: 'デイサービス', rating: 4.9, reviews: 32, availability: { mon: 'open', tue: 'limited', wed: 'open', thu: 'closed', fri: 'open', sat: 'closed', sun: 'closed' } },
-        { id: 4, name: '介護老健施設 希望', description: '老健施設', location: '神奈川県横浜市', service_type: '老健施設', rating: 4.5, reviews: 15, availability: { mon: 'open', tue: 'closed', wed: 'open', thu: 'limited', fri: 'open', sat: 'open', sun: 'closed' } },
-        { id: 5, name: '障害者支援センター ライト', description: '障害福祉', location: '埼玉県さいたま市', service_type: '障害福祉', rating: 4.7, reviews: 12, availability: { mon: 'open', tue: 'open', wed: 'limited', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' } },
-        { id: 6, name: '児童発達支援 キッズホーム', description: '児童福祉', location: '千葉県船橋市', service_type: '児童福祉', rating: 4.8, reviews: 20, availability: { mon: 'closed', tue: 'closed', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' } },
-        { id: 7, name: 'ナイトケアつばさ', description: '夜間訪問介護', location: '東京都港区', service_type: '訪問介護', rating: 4.2, reviews: 8, availability: { mon: 'limited', tue: 'open', wed: 'limited', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' } },
-        { id: 8, name: 'ひかりデイセンター', description: '地域密着型デイサービス', location: '神奈川県川崎市', service_type: 'デイサービス', rating: 4.4, reviews: 10, availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' } },
-        { id: 9, name: 'サンデーケア虹', description: '週末ケア', location: '千葉県千葉市', service_type: 'グループホーム', rating: 4.3, reviews: 6, availability: { mon: 'closed', tue: 'closed', wed: 'limited', thu: 'open', fri: 'open', sat: 'limited', sun: 'open' } },
-        { id: 10, name: 'みどり在宅ケアステーション', description: '在宅トータルサポート', location: '東京都世田谷区', service_type: '訪問介護', rating: 4.7, reviews: 14, availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' } }
+        { id: 1, name: 'サンシャイン福祉センター', description: '訪問介護サービスを提供', location: '東京都渋谷区', service_type: '訪問介護', rating: 4.8, reviews: 24, imageUrl: '/1.png', availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' } },
+        { id: 2, name: 'ケアホーム山田', description: 'グループホーム', location: '東京都新宿区', service_type: 'グループホーム', rating: 4.6, reviews: 18, imageUrl: '/2.png', availability: { mon: 'closed', tue: 'limited', wed: 'open', thu: 'open', fri: 'open', sat: 'limited', sun: 'closed' } },
+        { id: 3, name: 'デイサービス太陽', description: 'デイサービス', location: '東京都渋谷区', service_type: 'デイサービス', rating: 4.9, reviews: 32, imageUrl: '/3.png', availability: { mon: 'open', tue: 'limited', wed: 'open', thu: 'closed', fri: 'open', sat: 'closed', sun: 'closed' } },
+        { id: 4, name: '介護老健施設 希望', description: '老健施設', location: '神奈川県横浜市', service_type: '老健施設', rating: 4.5, reviews: 15, imageUrl: '/4.png', availability: { mon: 'open', tue: 'closed', wed: 'open', thu: 'limited', fri: 'open', sat: 'open', sun: 'closed' } },
+        { id: 5, name: '障害者支援センター ライト', description: '障害福祉', location: '埼玉県さいたま市', service_type: '障害福祉', rating: 4.7, reviews: 12, imageUrl: '/5.png', availability: { mon: 'open', tue: 'open', wed: 'limited', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' } },
+        { id: 6, name: '児童発達支援 キッズホーム', description: '児童福祉', location: '千葉県船橋市', service_type: '児童福祉', rating: 4.8, reviews: 20, imageUrl: '/6.png', availability: { mon: 'closed', tue: 'closed', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' } },
+        { id: 7, name: 'ナイトケアつばさ', description: '夜間訪問介護', location: '東京都港区', service_type: '訪問介護', rating: 4.2, reviews: 8, imageUrl: '/7.png', availability: { mon: 'limited', tue: 'open', wed: 'limited', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' } },
+        { id: 8, name: 'ひかりデイセンター', description: '地域密着型デイサービス', location: '神奈川県川崎市', service_type: 'デイサービス', rating: 4.4, reviews: 10, imageUrl: '/8.png', availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' } },
+        { id: 9, name: 'サンデーケア虹', description: '週末ケア', location: '千葉県千葉市', service_type: 'グループホーム', rating: 4.3, reviews: 6, imageUrl: '/gazo1.png', availability: { mon: 'closed', tue: 'closed', wed: 'limited', thu: 'open', fri: 'open', sat: 'limited', sun: 'open' } },
+        { id: 10, name: 'みどり在宅ケアステーション', description: '在宅トータルサポート', location: '東京都世田谷区', service_type: '訪問介護', rating: 4.7, reviews: 14, imageUrl: '/gazo1.png', availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' } }
       ]
 
       // If API returns too few, append mock (dedupe by id)
@@ -104,7 +104,8 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       service_type: '訪問介護',
       description: '高齢者向けの訪問介護サービスを提供。経験豊富なスタッフが利用者様のニーズに合わせたサービスを提供いたします。',
       rating: 4.8,
-      reviews: 24
+      reviews: 24,
+      imageUrl: '/1.png'
       , availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' }
     },
     {
@@ -114,7 +115,8 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       service_type: 'グループホーム',
       description: '認知症対応のグループホーム。家庭的な雰囲気の中で、専門的なケアを提供しています。',
       rating: 4.6,
-      reviews: 18
+      reviews: 18,
+      imageUrl: '/2.png'
       , availability: { mon: 'closed', tue: 'limited', wed: 'open', thu: 'open', fri: 'open', sat: 'limited', sun: 'closed' }
     },
     {
@@ -124,7 +126,8 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       service_type: 'デイサービス',
       description: '日中の介護・リハビリサービス。利用者様の機能維持と生きがいづくりをサポートします。',
       rating: 4.9,
-      reviews: 32
+      reviews: 32,
+      imageUrl: '/3.png'
       , availability: { mon: 'open', tue: 'limited', wed: 'open', thu: 'closed', fri: 'open', sat: 'closed', sun: 'closed' }
     },
     {
@@ -134,7 +137,8 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       service_type: '老健施設',
       description: 'リハビリと介護の総合施設。医療と福祉が統合されたサービスを提供します。',
       rating: 4.5,
-      reviews: 15
+      reviews: 15,
+      imageUrl: '/4.png'
       , availability: { mon: 'open', tue: 'closed', wed: 'open', thu: 'limited', fri: 'open', sat: 'open', sun: 'closed' }
     },
     {
@@ -144,7 +148,8 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       service_type: '障害福祉',
       description: '障害者の社会復帰と就労支援に特化。個別対応で最適なサポートを実施します。',
       rating: 4.7,
-      reviews: 12
+      reviews: 12,
+      imageUrl: '/5.png'
       , availability: { mon: 'open', tue: 'open', wed: 'limited', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' }
     },
     {
@@ -154,7 +159,8 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       service_type: '児童福祉',
       description: '子どもの成長発達を支援。親御さんとの連携も大切にしています。',
       rating: 4.8,
-      reviews: 20
+      reviews: 20,
+      imageUrl: '/6.png'
       , availability: { mon: 'closed', tue: 'closed', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' }
     }
     ,{
@@ -165,6 +171,7 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       description: '夜間対応の訪問介護サービスを行います。',
       rating: 4.2,
       reviews: 8,
+      imageUrl: '/7.png',
       availability: { mon: 'limited', tue: 'open', wed: 'limited', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' }
     },
     {
@@ -175,6 +182,7 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       description: '地域密着型の日中サービス。',
       rating: 4.4,
       reviews: 10,
+      imageUrl: '/8.png',
       availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'limited', sat: 'closed', sun: 'closed' }
     }
     ,{
@@ -185,6 +193,7 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       description: '日曜も対応する週末ケアプログラムを提供。',
       rating: 4.3,
       reviews: 6,
+      imageUrl: '/gazo1.png',
       availability: { mon: 'closed', tue: 'closed', wed: 'limited', thu: 'open', fri: 'open', sat: 'limited', sun: 'open' }
     },
     {
@@ -195,6 +204,7 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
       description: '在宅生活をトータルサポート。リハビリと看護の連携で安心を届けます。',
       rating: 4.7,
       reviews: 14,
+      imageUrl: '/gazo1.png',
       availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'open', sat: 'limited', sun: 'closed' }
     }
   ]
@@ -457,6 +467,16 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
           <div className="facilities-list">
             {filteredFacilities.map(f => (
               <div key={f.id} className="card facility-card" onClick={() => setSelectedFacility(f.id)}>
+                <div className="facility-card-image-wrapper">
+                  {f.imageUrl ? (
+                    <img src={f.imageUrl} alt={f.name} className="facility-card-image" />
+                  ) : (
+                    <div className="no-image-placeholder-card">
+                      <span className="no-image-icon">🖼️</span>
+                      <p>No Image</p>
+                    </div>
+                  )}
+                </div>
                 <div className="card-body">
                   <h3>{f.name}</h3>
                   <p className="muted">{f.location} • {f.service_type}</p>
