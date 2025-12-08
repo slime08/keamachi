@@ -61,12 +61,12 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
   const fetchFacilities = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('/api/facilities').catch(() => ({
+      const response = await axios.get<Facility[]>('/api/facilities').catch(() => ({
         data: generateMockFacilities()
       }))
 
       const apiData: Facility[] = response.data || []
-      const mockData = [
+      const mockData: Facility[] = [
         { id: 1, name: 'サンシャイン福祉センター', description: '訪問介護サービスを提供', location: '東京都渋谷区', service_type: '訪問介護', rating: 4.8, reviews: 24, availability: { mon: 'open', tue: 'open', wed: 'open', thu: 'open', fri: 'open', sat: 'closed', sun: 'closed' } },
         { id: 2, name: 'ケアホーム山田', description: 'グループホーム', location: '東京都新宿区', service_type: 'グループホーム', rating: 4.6, reviews: 18, availability: { mon: 'closed', tue: 'limited', wed: 'open', thu: 'open', fri: 'open', sat: 'limited', sun: 'closed' } },
         { id: 3, name: 'デイサービス太陽', description: 'デイサービス', location: '東京都渋谷区', service_type: 'デイサービス', rating: 4.9, reviews: 32, availability: { mon: 'open', tue: 'limited', wed: 'open', thu: 'closed', fri: 'open', sat: 'closed', sun: 'closed' } },
