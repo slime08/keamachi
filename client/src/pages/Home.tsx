@@ -2,16 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BrowseFacilities from './Browse'
-
-interface Facility {
-  id: number
-  name: string
-  description: string
-  location: string
-  service_type: string
-  rating?: number
-  reviews?: number
-}
+import { Facility } from '../types'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')

@@ -534,6 +534,34 @@ footer,
 .facility-description { color:var(--text-muted); margin:0; }
 .view-button { margin-top:auto; align-self:flex-end; }
 
+/* Browse page - Facility Card Image Styling */
+.facility-card-image-wrapper {
+  width: 100%;
+  height: 200px; /* Fixed height for consistency */
+  overflow: hidden;
+  border-radius: 12px; /* Match facility-card's border-radius or define separately */
+  margin-bottom: 12px; /* Space between image and text */
+}
+
+.facility-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintain aspect ratio and cover the area */
+  display: block; /* Remove extra space below image */
+  border-radius: 12px; /* Apply border-radius to the image itself for consistency */
+}
+
+/* Facility Detail Page - Main Image Styling */
+.facility-main-image {
+  width: 100%;
+  min-height: 300px; /* Ensure a minimum height */
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px; /* Already defined, but ensure it's there */
+}
+
 /* Responsive */
 @media (max-width: 980px) {
   .facilities-list { grid-template-columns: repeat(2, 1fr); }

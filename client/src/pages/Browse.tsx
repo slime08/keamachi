@@ -1,25 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-
-interface Facility {
-  id: number
-  name: string
-  description: string
-  location: string
-  service_type: string
-  rating?: number
-  reviews?: number
-  availability?: {
-    mon: 'open' | 'limited' | 'closed'
-    tue: 'open' | 'limited' | 'closed'
-    wed: 'open' | 'limited' | 'closed'
-    thu: 'open' | 'limited' | 'closed'
-    fri: 'open' | 'limited' | 'closed'
-    sat: 'open' | 'limited' | 'closed'
-    sun: 'open' | 'limited' | 'closed'
-  }
-}
+import { Facility } from '../types'
 
 type BrowseProps = {
   initialSearch?: string

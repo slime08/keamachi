@@ -4,14 +4,7 @@ import axios from 'axios'
 import FacilityDetail from './FacilityDetail'
 import MatchingManager from './MatchingManager'
 import Messaging from './Messaging'
-
-interface Facility {
-  id: number
-  name: string
-  description: string
-  location: string
-  service_type: string
-}
+import { Facility } from '../types'
 
 export default function Dashboard() {
   const navigate = useNavigate()

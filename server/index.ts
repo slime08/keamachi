@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -22,6 +23,14 @@ app.use(express.json());
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running' });
+});
+
+// Serve static files from the client's build directory
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// For any other requests, serve the client's index.html file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 // Mock routes for development
