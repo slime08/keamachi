@@ -636,32 +636,35 @@ footer,
   }
 
   .nav-links {
-    flex-direction: row; /* リンクも横一列に戻す */
-    gap: 10px; /* 既存のギャップを使用 */
-    flex-wrap: nowrap; /* ヘッダーリンクが折り返さないように */
-    overflow-x: auto; /* 必要に応じて横スクロール可能に */
-    -webkit-overflow-scrolling: touch; /* iOSのスクロールをスムーズに */
-    scrollbar-width: none; /* Firefoxのスクロールバーを非表示に */
-    /* IE/Edge のスクロールバー非表示 */
-    -ms-overflow-style: none;
-    padding-bottom: 5px; /* スクロールバーのためのスペース */
-  }
-  .nav-links::-webkit-scrollbar {
-    display: none; /* Chrome/Safari のスクロールバーを非表示に */
-  }
-
-  .nav-links a,
-  .nav-links button {
-    flex-shrink: 0; /* リンクが縮小されないように */
-  }
-
-  .hero-buttons {
-    flex-wrap: nowrap; /* ヒーローボタンが折り返さないように */
-    overflow-x: auto; /* 必要に応じて横スクロール可能に */
+    flex-direction: row;
+    gap: 6px; /* ギャップをさらに小さく */
+    flex-wrap: nowrap;
+    overflow-x: hidden; /* 横スクロールを隠す */
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-bottom: 5px;
+    padding-bottom: 0;
+    justify-content: flex-end; /* 右寄せにする */
+  }
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-links a,
+  .nav-links button {
+    flex-shrink: 0;
+    font-size: 13px; /* フォントサイズを小さく */
+    padding: 8px 10px; /* パディングも調整 */
+  }
+
+  .hero-buttons {
+    flex-wrap: nowrap;
+    justify-content: center; /* 中央揃え */
+    gap: 8px; /* ギャップを小さく */
+    overflow-x: hidden; /* 横スクロールを隠す */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 0;
   }
   .hero-buttons::-webkit-scrollbar {
     display: none;
@@ -669,25 +672,50 @@ footer,
   .hero-buttons .btn {
     flex-shrink: 0;
     white-space: nowrap; /* ボタンテキストの折り返しを防ぐ */
+    padding: 10px 14px; /* ボタンのパディングを調整 */
+    font-size: 14px; /* フォントサイズも調整 */
   }
 
   .weekday-toggle {
-    flex-wrap: nowrap; /* 曜日が折り返さないように */
-    overflow-x: auto; /* 横スクロール可能に */
+    flex-wrap: nowrap;
+    overflow-x: hidden; /* 横スクロールを隠す */
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-bottom: 5px;
-    justify-content: space-between; /* 均等配置 */
+    padding-bottom: 0;
+    justify-content: space-around; /* 均等配置 */
+    gap: 4px; /* ギャップをさらに小さく */
   }
   .weekday-toggle::-webkit-scrollbar {
     display: none;
   }
   .weekday-toggle .btn {
-    flex-shrink: 0; /* 曜日ボタンが縮小されないように */
+    flex-shrink: 0;
     white-space: nowrap; /* ボタンテキストの折り返しを防ぐ */
-    padding: 6px 8px; /* パディングを小さくしてスペースを節約 */
-    font-size: 13px; /* フォントサイズも小さく */
+    padding: 5px 6px; /* パディングをさらに小さく */
+    font-size: 12px; /* フォントサイズも小さく */
+    min-width: 30px; /* 最小幅を設定して小さくなりすぎないように */
+  }
+
+  /* 詳細ページ - 空き状況 */
+  .availability-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr)); /* 7列固定に */
+    gap: 4px; /* ギャップを小さく */
+  }
+  .availability-item {
+    padding: 0.5rem; /* パディングを小さく */
+    gap: 0.2rem;
+  }
+  .availability-day {
+    font-size: 11px; /* フォントサイズを小さく */
+  }
+  .availability-badge {
+    width: 30px; /* バッジを小さく */
+    height: 30px;
+    font-size: 16px;
+  }
+  .availability-status {
+    font-size: 10px; /* フォントサイズを小さく */
   }
 
   .dashboard-header {
@@ -760,37 +788,30 @@ footer,
 @media (max-width: 480px) {
   /* さらに小さい画面での調整 */
   .nav-links {
-    gap: 8px; /* ギャップをさらに小さく */
+    gap: 4px; /* ギャップをさらに小さく */
   }
-
-  .auth-form {
-    padding: 1.5rem;
-  }
-
-  .dashboard-header {
-    padding: 1rem;
-  }
-
-  .dashboard-content {
-    margin: 0;
-    padding: 1rem;
-    border-radius: 0;
-  }
-
-  .filter-tabs {
-    gap: 0.25rem;
-  }
-
-  .filter-tab {
-    padding: 0.5rem 1rem;
+  .nav-links a,
+  .nav-links button {
     font-size: 12px;
+    padding: 6px 8px;
   }
 
   .hero h1 {
-    font-size: 24px; /* さらに小さく */
+    font-size: 24px;
   }
   .hero p {
-    font-size: 16px; /* 本文のフォントサイズも調整 */
+    font-size: 16px;
+  }
+
+  .hero-buttons .btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .weekday-toggle .btn {
+    padding: 4px 5px;
+    font-size: 11px;
+    min-width: 28px;
   }
 }
 
@@ -826,3 +847,4 @@ footer,
 @media (max-width: 980px) {
   .weekday-badge { width:26px; height:26px; font-size:11px }
 }
+

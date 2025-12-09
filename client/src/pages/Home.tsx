@@ -43,7 +43,6 @@ export default function Home() {
             <a href="#services">サービス</a>
             <a href="#contact">お問い合わせ</a>
             <Link to="/login" className="nav-login">ログイン</Link>
-            <Link to="/register" className="btn btn-primary" style={{ padding: '10px 18px' }}>無料で始める</Link>
           </div>
         </div>
       </nav>
@@ -165,12 +164,8 @@ export default function Home() {
             <p>リハビリと介護の総合施設</p>
           </div>
           <div className="service-item">
-            <h3>障害福祉</h3>
-            <p>障害者支援と社会復帰支援</p>
-          </div>
-          <div className="service-item">
-            <h3>児童福祉</h3>
-            <p>子どもの成長発達支援</p>
+            <h3>障害福祉と児童福祉</h3>
+            <p>障害者支援と児童発達支援</p>
           </div>
           </div>
         </div>
