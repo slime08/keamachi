@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import api from './api'; // api.ts からインポートを追加
 // App.css is imported centrally in main.tsx to control load order
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
@@ -13,12 +14,9 @@ function App() {
     // Check if server is running
     const checkServer = async () => {
       try {
-        const response = await fetch('/api/health', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        }).catch(() => null)
+        const response = await api.get('/health').catch(() => null)
         
-        if (!response || !response.ok) {
+        if (!response || response.status !== 200) { // response.ok の代わりに status をチェック
           console.warn('⚠️ Backend server may not be running. Using mock data.')
         }
       } catch (error) {
@@ -34,7 +32,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename="/keamachi">
       <div className="app">
         <Routes>
           <Route path="/" element={<Home />} />
