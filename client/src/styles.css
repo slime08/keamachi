@@ -29,6 +29,7 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* 横方向のスクロールを隠す */
 }
 
 .app { min-height: 100vh; max-width: 100%; }
@@ -699,23 +700,23 @@ footer,
 
   /* 詳細ページ - 空き状況 */
   .availability-grid {
-    grid-template-columns: repeat(7, minmax(0, 1fr)); /* 7列固定に */
+    grid-template-columns: repeat(7, 1fr); /* 7列固定を維持 */
     gap: 4px; /* ギャップを小さく */
   }
   .availability-item {
-    padding: 0.5rem; /* パディングを小さく */
-    gap: 0.2rem;
+    padding: 0.3rem; /* パディングをさらに小さく */
+    gap: 0.1rem; /* ギャップをさらに小さく */
   }
   .availability-day {
-    font-size: 11px; /* フォントサイズを小さく */
+    font-size: 10px; /* フォントサイズを小さく */
   }
   .availability-badge {
-    width: 30px; /* バッジを小さく */
-    height: 30px;
-    font-size: 16px;
+    width: 26px; /* バッジをさらに小さく */
+    height: 26px;
+    font-size: 14px;
   }
   .availability-status {
-    font-size: 10px; /* フォントサイズを小さく */
+    font-size: 9px; /* フォントサイズを小さく */
   }
 
   .dashboard-header {
@@ -786,6 +787,11 @@ footer,
 }
 
 @media (max-width: 480px) {
+  /* グローバルなパディングの調整 */
+  .container {
+    padding: 0 10px; /* 左右のパディングを小さく */
+  }
+
   /* さらに小さい画面での調整 */
   .nav-links {
     gap: 4px; /* ギャップをさらに小さく */
@@ -796,22 +802,25 @@ footer,
     padding: 6px 8px;
   }
 
-  .hero h1 {
-    font-size: 24px;
+  .hero-buttons {
+    gap: 6px;
   }
-  .hero p {
-    font-size: 16px;
-  }
-
   .hero-buttons .btn {
     padding: 8px 12px;
     font-size: 13px;
   }
 
   .weekday-toggle .btn {
-    padding: 4px 5px;
-    font-size: 11px;
-    min-width: 28px;
+    padding: 3px 4px;
+    font-size: 10px;
+    min-width: 26px;
+  }
+
+  .hero h1 {
+    font-size: 24px; /* さらに小さく */
+  }
+  .hero p {
+    font-size: 16px; /* 本文のフォントサイズも調整 */
   }
 }
 
@@ -847,4 +856,3 @@ footer,
 @media (max-width: 980px) {
   .weekday-badge { width:26px; height:26px; font-size:11px }
 }
-
