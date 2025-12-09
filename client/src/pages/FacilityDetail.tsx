@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../api'
 
 interface FacilityDetailProps {
   facilityId: number
@@ -222,8 +222,8 @@ export default function FacilityDetail({ facilityId, onBack }: FacilityDetailPro
     setError('')
 
     try {
-      await axios.post(
-        '/api/matching',
+      await api.post(
+        '/matching',
         { facility_id: facilityId },
         { headers: { Authorization: `Bearer ${token}` } }
       ).catch(() => {

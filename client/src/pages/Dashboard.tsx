@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 import FacilityDetail from './FacilityDetail'
 import MatchingManager from './MatchingManager'
 import Messaging from './Messaging'
@@ -27,7 +27,7 @@ export default function Dashboard() {
   const fetchFacilities = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('/api/facilities').catch(() => ({
+      const response = await api.get<Facility[]>('/facilities').catch(() => ({
         data: [
           { id: 1, name: 'サンシャイン福祉センター', location: '東京都渋谷区', service_type: '訪問介護', description: '訪問介護を中心に安心サポート。' },
           { id: 2, name: 'ケアホーム山田', location: '東京都新宿区', service_type: 'グループホーム', description: '家庭的なグループホームで専門ケア。' },

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
+import api from '../api'
 
 interface Message {
   id: number
@@ -130,8 +130,8 @@ export default function Messaging() {
       setInputValue('')
 
       // Call API
-      await axios.post(
-        '/api/messages',
+      await api.post(
+        '/messages',
         {
           conversation_id: selectedConversation,
           content: inputValue

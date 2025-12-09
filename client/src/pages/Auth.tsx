@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 
 interface LoginFormData {
   email: string
@@ -76,8 +76,8 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
         }
       }
 
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register'
-      const response = await axios.post(endpoint, formData, {
+      const endpoint = isLogin ? '/auth/login' : '/auth/register'
+      const response = await api.post(endpoint, formData, {
         timeout: 5000
       }).catch(err => {
         if (err.code === 'ECONNABORTED' || !err.response) {

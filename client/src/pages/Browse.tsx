@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api'
 import { Facility } from '../types'
 
 type BrowseProps = {
@@ -43,7 +43,7 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
   const fetchFacilities = async () => {
     try {
       setLoading(true)
-      const response = await axios.get<Facility[]>('/api/facilities').catch(() => ({
+      const response = await api.get<Facility[]>('/facilities').catch(() => ({
         data: generateMockFacilities()
       }))
 
