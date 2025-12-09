@@ -2,7 +2,26 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BrowseFacilities from './Browse'
-import { Facility } from '../types'
+
+interface Facility {
+  id: number
+  name: string
+  description: string
+  location: string
+  service_type: string
+  rating?: number
+  reviews?: number
+  imageUrl?: string
+  availability?: {
+    mon: 'open' | 'limited' | 'closed'
+    tue: 'open' | 'limited' | 'closed'
+    wed: 'open' | 'limited' | 'closed'
+    thu: 'open' | 'limited' | 'closed'
+    fri: 'open' | 'limited' | 'closed'
+    sat: 'open' | 'limited' | 'closed'
+    sun: 'open' | 'limited' | 'closed'
+  }
+}
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -42,7 +61,7 @@ export default function Home() {
           </div>
           <div className="hero-illustration card">
             <img
-              src="/LP.png"
+              src="/keamachi/LP.png"
               alt="ケアマチの利用イメージ"
               className="hero-image"
             />
@@ -212,5 +231,3 @@ export default function Home() {
     </div>
   )
 }
-
-
