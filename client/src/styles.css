@@ -28,7 +28,7 @@ body {
   background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .app { min-height: 100vh; max-width: 100%; }
@@ -622,6 +622,26 @@ footer,
 }
 
 @media (max-width: 768px) {
+  /* ヘッダー部分の調整 */
+  .nav-container {
+    flex-direction: row; /* 横一列に戻す */
+    justify-content: space-between; /* 要素を両端に寄せる */
+    gap: 16px; /* 既存のギャップを使用 */
+  }
+
+  .nav-logo .logo-text {
+    display: none; /* 「ケアマチ」の文字を非表示 */
+  }
+
+  .nav-links {
+    flex-direction: row; /* リンクも横一列に戻す */
+    gap: 10px; /* 既存のギャップを使用 */
+  }
+
+  .nav-links .btn-primary { /* 「無料で始める」ボタン */
+    display: none; /* 非表示 */
+  }
+
   .dashboard-header {
     flex-direction: column;
     gap: 1rem;
@@ -690,6 +710,11 @@ footer,
 }
 
 @media (max-width: 480px) {
+  /* さらに小さい画面での調整 */
+  .nav-links {
+    gap: 8px; /* ギャップをさらに小さく */
+  }
+
   .auth-form {
     padding: 1.5rem;
   }
@@ -753,3 +778,4 @@ footer,
 @media (max-width: 980px) {
   .weekday-badge { width:26px; height:26px; font-size:11px }
 }
+
