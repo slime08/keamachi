@@ -8,11 +8,11 @@
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "server:dev": "node --import=tsx server/index.ts",
     "client:dev": "cd client && vite",
-    "build": "cd client && vite build",
+    "build": "cd client && tsc && vite build",
     "preview": "cd client && vite preview",
     "start": "node server/index.js",
     "db:migrate": "node server/migrations/run.js",
-    "deploy": "gh-pages -d client/dist"
+    "deploy": "npm run build --prefix client && copy client\\dist\\index.html client\\dist\\404.html && gh-pages -d client/dist"
   },
   "keywords": [
     "matching",
