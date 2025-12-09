@@ -704,14 +704,11 @@ footer,
   }
 
   .weekday-toggle {
-    /* flex-wrap: nowrap; /* 既存 */
-    overflow-x: auto; /* 横スクロール可能に戻す */
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding-bottom: 5px;
-    justify-content: flex-start; /* 左寄せに戻す (スクロールのため) */
-    gap: 8px; /* ギャップを少し広げる */
+    display: flex; /* 追加 */
+    flex-wrap: nowrap; /* 追加 */
+    overflow-x: hidden; /* 横スクロールを隠す */
+    justify-content: space-around; /* 均等配置 */
+    gap: 4px; /* ギャップをさらに小さく */
   }
   .weekday-toggle::-webkit-scrollbar {
     display: none;
@@ -719,9 +716,9 @@ footer,
   .weekday-toggle .btn {
     flex-shrink: 0;
     white-space: nowrap;
-    padding: 6px 10px; /* パディングを調整 */
-    font-size: 13px; /* フォントサイズを調整 */
-    min-width: 40px; /* 最小幅を設定 */
+    padding: 5px 6px; /* パディングをさらに小さく */
+    font-size: 12px; /* フォントサイズも小さく */
+    min-width: 30px; /* 最小幅を設定して小さくなりすぎないように */
   }
 
   /* 詳細ページ - 空き状況 */
