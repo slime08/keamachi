@@ -11,12 +11,13 @@ interface RegisterFormData {
   email: string
   password: string
   name: string
-  role: 'facility' | 'user'
+  role: 'facility' | 'user' | 'planner' | 'care_manager'
   facility_name?: string
   facility_location?: string
   facility_service_type?: string
   facility_phone?: string
   facility_description?: string
+  services?: string[];
 }
 
 export default function Auth({ mode }: { mode: 'login' | 'register' }) {
@@ -55,7 +56,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
     }
   }, [location.search, isLogin])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
@@ -100,6 +101,27 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
       // トークンをローカルストレージに保存
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('user', JSON.stringify(response.data.user))
+
+      // 事業所登録の場合、事業所APIにも情報をPOST
+      if (!isLogin && (formData as RegisterFormData).role === 'facility') {
+        const fData = formData as RegisterFormData;
+        try {
+          // services は配列を期待するので、facility_service_type を配列に変換
+          const servicesArray = fData.facility_service_type ? [fData.facility_service_type] : [];
+          await api.post('/facilities', {
+            name: fData.facility_name,
+            address: fData.facility_location,
+            services: servicesArray, // 修正
+            // description など他のフィールドも必要に応じて追加
+          }, {
+            headers: { Authorization: `Bearer ${response.data.token}` } // 認証トークンを使用
+          });
+          console.log('Facility details registered successfully.');
+        } catch (facilityErr) {
+          console.error('Failed to register facility details:', facilityErr);
+          // エラーが発生してもユーザー登録自体は成功しているので、ここでは大きなエラーとはしない
+        }
+      }
       
       // ダッシュボードへリダイレクト
       navigate('/dashboard', { replace: true })
@@ -262,7 +284,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
                       <textarea
                         name="facility_description"
                         value={(formData as RegisterFormData).facility_description || ''}
-                        onChange={(e) => setFormData(prev => ({ ...prev, facility_description: e.target.value }))}
+                        onChange={handleChange} // ここを修正
                         placeholder="事業所の特徴や提供サービスを簡潔に記入してください"
                         rows={3}
                         className="textarea"
@@ -289,3 +311,4 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
     </div>
   )
 }
+
