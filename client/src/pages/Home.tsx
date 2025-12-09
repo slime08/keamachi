@@ -83,7 +83,7 @@ export default function Home() {
           </select>
           <button className="btn btn-primary">検索</button>
         </div>
-        <div className="weekday-toggle">
+        <div className="weekday-toggle weekday-filter">
           {[['all','すべて'],['mon','月'],['tue','火'],['wed','水'],['thu','木'],['fri','金'],['sat','土'],['sun','日']].map(([k,label])=> (
             <button key={k} onClick={()=>setSelectedWeekday(k as any)} className={selectedWeekday===k ? 'btn btn-primary' : 'btn btn-ghost'}>{label}</button>
           ))}

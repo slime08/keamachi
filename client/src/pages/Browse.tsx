@@ -416,7 +416,7 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
 
             <div className="filter-group">
               <label>曜日で絞り込む</label>
-              <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+              <div className="weekday-toggle weekday-filter">
                 {[
                   ['all','すべて'],['mon','月'],['tue','火'],['wed','水'],['thu','木'],['fri','金'],['sat','土'],['sun','日']
                 ].map(([k,label])=> (

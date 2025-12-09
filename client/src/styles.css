@@ -524,8 +524,8 @@ footer,
 /* Browse page */
 .browse-container { padding: 40px 0; }
 .filter-section { display:flex; gap:16px; align-items:center; margin-bottom:18px; }
-.search-bar input { width:420px; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text); }
-.filter-group select { padding:10px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text); }
+.search-bar input { width:420px; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text); min-width: 180px; }
+.filter-group select { padding:10px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text); min-width: 180px; }
 .results-info { color:var(--text-muted); margin-bottom:12px; }
 .facilities-list { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
 .facility-list-item { cursor:pointer; transition: transform 0.18s ease, box-shadow 0.18s ease; }
@@ -564,6 +564,32 @@ footer,
   display: block;
   border-radius: 16px; /* Already defined, but ensure it's there */
 }
+
+/* Weekday filter general styles */
+.weekday-filter {
+  display: flex;
+  flex-wrap: nowrap;   /* 折り返し禁止 */
+  width: 100%;
+  gap: 4px;            /* ボタン間のギャップ */
+  overflow-x: hidden;    /* 横スクロールを隠す */
+  justify-content: space-around; /* 均等に配置 */
+}
+
+.weekday-filter button,
+.weekday-filter .availability-item { /* availability-item も曜日ボタンと似た挙動に */
+  flex: 1 1 0;         /* 全ボタン/アイテムを均等幅にする */
+  min-width: 0;        /* はみ出さないようにする */
+  white-space: nowrap; /* 文字を折り返さない */
+  padding: 6px 4px;    /* スマホでも収まるようにコンパクトに */
+  font-size: 0.8rem;   /* 必要ならフォントを小さめに */
+  text-align: center;  /* 文字を中央寄せに */
+}
+
+/* Authページレイアウトの調整 (中央揃え) */
+.hero-buttons {
+  justify-content: center; /* 中央揃え */
+}
+
 
 /* Responsive */
 @media (max-width: 1024px) {
@@ -678,30 +704,30 @@ footer,
   }
 
   .weekday-toggle {
-    flex-wrap: nowrap;
-    overflow-x: hidden; /* 横スクロールを隠す */
+    /* flex-wrap: nowrap; /* 既存 */
+    overflow-x: auto; /* 横スクロール可能に戻す */
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-bottom: 0;
-    justify-content: space-around; /* 均等配置 */
-    gap: 4px; /* ギャップをさらに小さく */
+    padding-bottom: 5px;
+    justify-content: flex-start; /* 左寄せに戻す (スクロールのため) */
+    gap: 8px; /* ギャップを少し広げる */
   }
   .weekday-toggle::-webkit-scrollbar {
     display: none;
   }
   .weekday-toggle .btn {
     flex-shrink: 0;
-    white-space: nowrap; /* ボタンテキストの折り返しを防ぐ */
-    padding: 5px 6px; /* パディングをさらに小さく */
-    font-size: 12px; /* フォントサイズも小さく */
-    min-width: 30px; /* 最小幅を設定して小さくなりすぎないように */
+    white-space: nowrap;
+    padding: 6px 10px; /* パディングを調整 */
+    font-size: 13px; /* フォントサイズを調整 */
+    min-width: 40px; /* 最小幅を設定 */
   }
 
   /* 詳細ページ - 空き状況 */
   .availability-grid {
     grid-template-columns: repeat(7, 1fr); /* 7列固定を維持 */
-    gap: 4px; /* ギャップを小さく */
+    gap: 2px; /* ギャップをさらに小さく */
   }
   .availability-item {
     padding: 0.3rem; /* パディングをさらに小さく */
@@ -856,3 +882,4 @@ footer,
 @media (max-width: 980px) {
   .weekday-badge { width:26px; height:26px; font-size:11px }
 }
+

@@ -279,7 +279,7 @@ export default function FacilityDetail({ facilityId, onBack }: FacilityDetailPro
       {availability && (
         <div className="availability-section">
           <h3>空き状況</h3>
-          <div className="availability-grid">
+          <div className="availability-grid weekday-filter">
             {['mon','tue','wed','thu','fri','sat','sun'].map((d) => {
               const labels: any = { mon: '月', tue: '火', wed: '水', thu: '木', fri: '金', sat: '土', sun: '日' }
               const status: any = availability && (availability as any)[d]
