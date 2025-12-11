@@ -24,6 +24,9 @@ jobs:
       - name: Build project
         working-directory: ./client # Run npm run build in the client directory
         run: npm run build
+        env: # Add environment variables for the build
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -44,3 +47,8 @@ jobs:
 # 3. Choose "gh-pages" branch and "/ (root)" folder, then click "Save".
 # 4. Ensure your repository has "GitHub Actions" enabled (usually default).
 # 5. If you have a custom domain, uncomment the 'cname' line above and set it.
+# 6. IMPORTANT: You must add your Supabase environment variables as GitHub Secrets:
+#    - Go to your repository settings -> "Secrets and variables" -> "Actions".
+#    - Click "New repository secret".
+#    - Add "VITE_SUPABASE_URL" with your Supabase project URL.
+#    - Add "VITE_SUPABASE_ANON_KEY" with your Supabase project anon key.
