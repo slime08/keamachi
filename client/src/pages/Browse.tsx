@@ -80,34 +80,41 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
   }
 
   const filterFacilities = () => {
-    let filtered = facilities
+    let filtered = facilities; // Start with all fetched facilities
+
+    const noActiveFilters = !searchQuery && selectedService === 'all' && selectedLocation === 'all' && selectedWeekday === 'all';
+
+    if (noActiveFilters) {
+      setFilteredFacilities(facilities); // If no filters, show all facilities
+      return;
+    }
 
     if (searchQuery) {
-      const q = searchQuery.toLowerCase()
+      const q = searchQuery.toLowerCase();
       filtered = filtered.filter(f => {
-        const name = (f.name || '').toLowerCase()
-        const desc = (f.description || '').toLowerCase()
-        return name.includes(q) || desc.includes(q)
-      })
+        const name = (f.name || '').toLowerCase();
+        const desc = (f.description || '').toLowerCase();
+        return name.includes(q) || desc.includes(q);
+      });
     }
 
     if (selectedService !== 'all') {
-      filtered = filtered.filter(f => f.serviceType === selectedService)
+      filtered = filtered.filter(f => f.serviceType === selectedService);
     }
 
     if (selectedLocation !== 'all') {
-      filtered = filtered.filter(f => f.location.includes(selectedLocation))
+      filtered = filtered.filter(f => f.location.includes(selectedLocation));
     }
 
     if (selectedWeekday !== 'all') {
       filtered = filtered.filter(f => {
-        const status = f.availability && (f.availability as any)[selectedWeekday]
+        const status = f.availability && (f.availability as any)[selectedWeekday];
         // treat 'open' and 'limited' as matchable (〇 or △), 'closed' means no availability
-        return status === 'open' || status === 'limited'
-      })
+        return status === 'open' || status === 'limited';
+      });
     }
 
-    setFilteredFacilities(filtered)
+    setFilteredFacilities(filtered);
   }
 
   const toggleFavorite = (facilityId: number) => {
