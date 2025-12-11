@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import api from './api';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom' // Removed BrowserRouter as Router
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
@@ -35,18 +35,16 @@ function App() {
   }
 
   return (
-    <Router basename="/keamachi">
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/browse" element={<Home />} />
-          <Route path="/login" element={<Auth mode="login" />} />
-          <Route path="/register" element={<Auth mode="register" />} />
-          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="app"> {/* Router element removed */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/browse" element={<Home />} />
+        <Route path="/login" element={<Auth mode="login" />} />
+        <Route path="/register" element={<Auth mode="register" />} />
+        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
   )
 }
 

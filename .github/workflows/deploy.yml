@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Or your project's Node.js version
+
+      - name: Install dependencies
+        working-directory: ./client # Run npm ci in the client directory
+        run: npm ci
+
+      - name: Build project
+        working-directory: ./client # Run npm run build in the client directory
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./client/dist
+          publish_branch: gh-pages # Deploy to the gh-pages branch
+          cname: # Optional: Your custom domain if you have one
+          # Personal Access Token (PAT) is usually not needed if using GITHUB_TOKEN for organization repos or if pages is public
+          # For public repositories, GITHUB_TOKEN typically has sufficient permissions.
+          # For private repositories or specific permissions, a PAT might be required.
+          # If deployment fails, check your GitHub Pages settings and repository permissions.
+
+# Instructions for GitHub Pages setup:
+# 1. In your GitHub repository settings, go to "Pages" section.
+# 2. Under "Source", select "Deploy from a branch".
+# 3. Choose "gh-pages" branch and "/ (root)" folder, then click "Save".
+# 4. Ensure your repository has "GitHub Actions" enabled (usually default).
+# 5. If you have a custom domain, uncomment the 'cname' line above and set it.

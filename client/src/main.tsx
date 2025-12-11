@@ -5,6 +5,7 @@ import './index.css'
 import './App.css'
 import './styles.css'
 import { sanitizeLocalStorage } from './utils/storage'
+import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter for client/src/main.tsx
 
 import { AuthProvider } from './contexts/AuthProvider'; // Import AuthProvider
 
@@ -13,8 +14,10 @@ sanitizeLocalStorage(['token'])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthProvider> {/* Wrap App with AuthProvider */}
-      <App />
+    <AuthProvider>
+      <BrowserRouter basename="/keamachi"> {/* Wrap App with BrowserRouter and add basename */}
+        <App />
+      </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>,
 )
