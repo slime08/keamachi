@@ -69,10 +69,11 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
     try {
       setLoading(true)
       const response = await api.get<Facility[]>('/facilities')
-      setFacilities(response.data || [])
+      // Ensure response.data is always an array
+      setFacilities(Array.isArray(response.data) ? response.data : [])
     } catch (err) {
       console.error(err)
-      setFacilities([])
+      setFacilities([]) // Keep fallback to empty array on error
     } finally {
       setLoading(false)
     }
