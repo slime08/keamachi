@@ -16,7 +16,7 @@ sanitizeLocalStorage(['token'])
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
-      <BrowserRouter basename="/keamachi"> {/* Wrap App with BrowserRouter and add basename */}
+      <BrowserRouter> {/* Wrap App with BrowserRouter */}
         <App />
       </BrowserRouter>
     </AuthProvider>

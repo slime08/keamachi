@@ -69,7 +69,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    console.error('useAuth was called outside of AuthProvider. Falling back to guest mode.');
+    // 「未ログイン扱い」で動く安全なデフォルト値を返す
+    return {
+      session: null,
+      user: null,
+      loading: false,
+      signOut: async () => {
+        // 何もしないダミー
+      },
+    };
   }
   return context;
 };
