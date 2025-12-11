@@ -1,10 +1,10 @@
-import express from 'express';
+﻿import express from 'express';
 import { query } from '../db.js';
 import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// ユーザープロフィール取得
+// 繝ｦ繝ｼ繧ｶ繝ｼ繝励Ο繝輔ぅ繝ｼ繝ｫ蜿門ｾ・
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// プロフィール更新
+// 繝励Ο繝輔ぅ繝ｼ繝ｫ譖ｴ譁ｰ
 router.put('/:id', authenticate, async (req, res) => {
   try {
     const { id } = req.params;

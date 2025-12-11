@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+﻿import dotenv from 'dotenv';
 import { Client } from 'pg';
 import fs from 'fs';
 import path from 'path';
@@ -31,7 +31,7 @@ const clientConfig = connectionString ? { connectionString, ssl: { rejectUnautho
     console.log(JSON.stringify(r.rows, null, 2));
     await client.end();
   } catch (err) {
-    console.error('DB 接続失敗:', err.message || err);
+    console.error('DB 謗･邯壼､ｱ謨・', err.message || err);
     process.exitCode = 1;
   }
 })();

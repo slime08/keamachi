@@ -1,10 +1,10 @@
-import express from 'express';
+﻿import express from 'express';
 import { query } from '../db.js';
 import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// マッチング提案を取得
+// 繝槭ャ繝√Φ繧ｰ謠先｡医ｒ蜿門ｾ・
 router.get('/suggestions', authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -19,7 +19,7 @@ router.get('/suggestions', authenticate, async (req, res) => {
   }
 });
 
-// マッチングを作成
+// 繝槭ャ繝√Φ繧ｰ繧剃ｽ懈・
 router.post('/', authenticate, async (req, res) => {
   try {
     const { facility_id, user_id } = req.body;
@@ -34,7 +34,7 @@ router.post('/', authenticate, async (req, res) => {
   }
 });
 
-// マッチングを承認
+// 繝槭ャ繝√Φ繧ｰ繧呈価隱・
 router.put('/:id/accept', authenticate, async (req, res) => {
   try {
     const { id } = req.params;

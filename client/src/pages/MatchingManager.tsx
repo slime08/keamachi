@@ -28,7 +28,7 @@ export default function MatchingManager() {
         {
           id: 1,
           facilityId: 1,
-          facilityName: 'サンシャイン福祉センター',
+          facilityName: 'オンライン福祉センター',
           status: 'accepted',
           appliedDate: '2025-12-01',
           respondedDate: '2025-12-02'
@@ -36,14 +36,14 @@ export default function MatchingManager() {
         {
           id: 2,
           facilityId: 2,
-          facilityName: 'ケアホーム山田',
+          facilityName: 'ケアマチ山手',
           status: 'pending',
           appliedDate: '2025-12-05'
         },
         {
           id: 3,
           facilityId: 3,
-          facilityName: 'デイサービス太陽',
+          facilityName: 'デイサービス港',
           status: 'accepted',
           appliedDate: '2025-12-03',
           respondedDate: '2025-12-04'
@@ -59,7 +59,7 @@ export default function MatchingManager() {
   }
 
   const handleCancelMatch = async (matchId: number) => {
-    if (confirm('このマッチング申し込みをキャンセルしますか？')) {
+    if (confirm('このマッチング申請をキャンセルしますか？')) {
       try {
         await axios.put(
           `/api/matching/${matchId}/cancel`,
@@ -85,9 +85,9 @@ export default function MatchingManager() {
 
   const getStatusBadge = (status: string) => {
     const statusMap: Record<string, { label: string; className: string }> = {
-      pending: { label: '待機中', className: 'badge-pending' },
+      pending: { label: '申請中', className: 'badge-pending' },
       accepted: { label: '承認済み', className: 'badge-accepted' },
-      rejected: { label: '拒否', className: 'badge-rejected' }
+      rejected: { label: '却下', className: 'badge-rejected' }
     }
     const { label, className } = statusMap[status] || { label: status, className: '' }
     return <span className={`badge ${className}`}>{label}</span>
@@ -105,9 +105,9 @@ export default function MatchingManager() {
             onClick={() => setFilter(tab)}
           >
             {tab === 'all' && 'すべて'}
-            {tab === 'pending' && '待機中'}
+            {tab === 'pending' && '申請中'}
             {tab === 'accepted' && '承認済み'}
-            {tab === 'rejected' && '拒否'}
+            {tab === 'rejected' && '却下'}
             <span className="count">
               {matches.filter(m => tab === 'all' || m.status === tab).length}
             </span>
@@ -119,7 +119,7 @@ export default function MatchingManager() {
         <div className="loading">読み込み中...</div>
       ) : filteredMatches.length === 0 ? (
         <div className="empty-state">
-          <p>マッチング申し込みはありません</p>
+          <p>マッチング申請はありません</p>
         </div>
       ) : (
         <div className="matches-list">
@@ -131,7 +131,7 @@ export default function MatchingManager() {
               </div>
               <div className="match-details">
                 <div className="detail-item">
-                  <span className="label">申し込み日</span>
+                  <span className="label">申請日</span>
                   <span className="value">{match.appliedDate}</span>
                 </div>
                 {match.respondedDate && (

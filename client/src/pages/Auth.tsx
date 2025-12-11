@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import api from '../api'
+import { safeSetJSON } from '../utils/storage'
 
 interface LoginFormData {
   email: string
@@ -42,7 +43,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  // URL から mode を判定
+  // URLからmodeを判断
   useEffect(() => {
     setIsLogin(location.pathname === '/login')
   }, [location.pathname])
@@ -100,9 +101,9 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
       
       // トークンをローカルストレージに保存
       localStorage.setItem('token', response.data.token)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
+      safeSetJSON('user', response.data.user)
 
-      // 事業所登録の場合、事業所APIにも情報をPOST
+      // 事業所登録の場合、事業所APIにも追加登録
       if (!isLogin && (formData as RegisterFormData).role === 'facility') {
         const fData = formData as RegisterFormData;
         try {
@@ -111,8 +112,8 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
           await api.post('/facilities', {
             name: fData.facility_name,
             address: fData.facility_location,
-            services: servicesArray, // 修正
-            // description など他のフィールドも必要に応じて追加
+            services: servicesArray,
+            // description など残りのフィールドも必要に応じて追加
           }, {
             headers: { Authorization: `Bearer ${response.data.token}` } // 認証トークンを使用
           });
@@ -127,7 +128,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
       navigate('/dashboard', { replace: true })
     } catch (err: any) {
       console.error('Auth error:', err)
-      setError(err.response?.data?.error || 'エラーが発生しました。サーバーが起動しているか確認してください。')
+      setError(err.response?.data?.error || 'エラーが発生しました。しばらくしてから再度お試しください。')
     } finally {
       setLoading(false)
     }
@@ -158,14 +159,14 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
       <div className="auth-shell">
         <div className="auth-hero">
           <span className="pill">ケアマチ</span>
-          <h2>安心してつながる<br />福祉マッチング</h2>
+          <h2>手軽でつながる<br />福祉マッチング</h2>
           <p className="auth-lead">
-            シンプルなステップで、利用者も事業所もすぐに利用開始できます。
+            シンプルなステップで、利用者も事業所も気軽に利用開始できます。
           </p>
           <ul className="auth-points">
-            <li>・登録から利用開始まで最短ステップ</li>
-            <li>・事業所情報は暗号化して安全に管理</li>
-            <li>・ケアマネ/相談員ともスムーズに共有</li>
+            <li>登録から利用開始まで最短ステップ</li>
+            <li>事業所情報は詳細公開で探しやすく</li>
+            <li>ケアマネ/相談員ともスムーズに</li>
           </ul>
         </div>
 
@@ -202,19 +203,19 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
             {!isLogin && (
               <>
                 <div className="form-group">
-                  <label>名前</label>
+                  <label>氏名</label>
                   <input
                     type="text"
                     name="name"
                     value={(formData as RegisterFormData).name || ''}
                     onChange={handleChange}
                     required
-                    placeholder="山田太郎"
+                    placeholder="山田 太郎"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>ユーザータイプ</label>
+                  <label>ユーザー種別</label>
                   <select
                     name="role"
                     value={(formData as RegisterFormData).role}
@@ -222,9 +223,9 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
                     required
                   >
                     <option value="user">サービス利用者</option>
-                    <option value="facility">福祉事業所</option>
-                    <option value="planner">計画相談員</option>
-                    <option value="care_manager">ケアマネジャー</option>
+                    <option value="facility">事業所</option>
+                    <option value="planner">認定相談員</option>
+                    <option value="care_manager">ケアマネージャー</option>
                   </select>
                 </div>
 
@@ -238,7 +239,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
                         value={(formData as RegisterFormData).facility_name || ''}
                         onChange={handleChange}
                         required
-                        placeholder="例: ケアホームさくら"
+                        placeholder="例: ケアマチ介護"
                       />
                     </div>
                     <div className="form-group">
@@ -249,7 +250,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
                         value={(formData as RegisterFormData).facility_location || ''}
                         onChange={handleChange}
                         required
-                        placeholder="例: 東京都渋谷区◯◯1-2-3"
+                        placeholder="例: 東京都新宿区1-2-3"
                       />
                     </div>
                     <div className="form-group">
@@ -264,9 +265,9 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
                         <option value="訪問介護">訪問介護</option>
                         <option value="デイサービス">デイサービス</option>
                         <option value="グループホーム">グループホーム</option>
-                        <option value="老健施設">老健施設</option>
                         <option value="障害福祉">障害福祉</option>
                         <option value="児童福祉">児童福祉</option>
+                        <option value="老人福祉">老人福祉</option>
                       </select>
                     </div>
                     <div className="form-group">
@@ -280,12 +281,12 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
                       />
                     </div>
                     <div className="form-group">
-                      <label>紹介文</label>
+                      <label>説明</label>
                       <textarea
                         name="facility_description"
                         value={(formData as RegisterFormData).facility_description || ''}
-                        onChange={handleChange} // ここを修正
-                        placeholder="事業所の特徴や提供サービスを簡潔に記入してください"
+                        onChange={handleChange}
+                        placeholder="事業所の特徴や提供サービスを具体的に入力してください"
                         rows={3}
                         className="textarea"
                       />
@@ -296,14 +297,14 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
             )}
 
             <button type="submit" disabled={loading}>
-              {loading ? '処理中...' : (isLogin ? 'ログイン' : '登録')}
+              {loading ? '送信中...' : (isLogin ? 'ログイン' : '登録')}
             </button>
           </form>
 
           <p className="toggle-text">
             {isLogin ? '新規登録は' : 'ログインは'}
             <button type="button" onClick={toggleMode} className="toggle-button">
-              {isLogin ? 'こちら' : 'こちら'}
+              こちら
             </button>
           </p>
         </div>
@@ -311,4 +312,3 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
     </div>
   )
 }
-

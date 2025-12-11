@@ -1,17 +1,18 @@
 {
   "name": "care-matching-app",
   "version": "1.0.0",
-  "description": "福祉関係の事業所と利用者向けマッチングアプリ",
+  "description": "福祉事業所と利用者を繋ぐマッチングプラットフォーム",
   "main": "server/index.js",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "server:dev": "node --import=tsx server/index.ts",
-    "client:dev": "cd client && vite",
+    "client:dev": "npm run dev --prefix client -- --host",
     "build": "cd client && tsc && vite build",
     "preview": "cd client && vite preview",
     "start": "node server/index.js",
     "db:migrate": "node server/migrations/run.js",
+    "db:seed": "node server/seeds/seed_facilities.js",
     "deploy": "npm run build --prefix client && copy client\\dist\\index.html client\\dist\\404.html && gh-pages -d client/dist"
   },
   "keywords": [
@@ -23,13 +24,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@supabase/supabase-js": "^2.87.1",
     "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "pg": "^8.10.0",
+    "pg": "^8.11.3",
     "socket.io": "^4.7.1"
   },
   "devDependencies": {

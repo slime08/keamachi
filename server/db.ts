@@ -1,4 +1,4 @@
-// server/db.ts
+﻿// server/db.ts
 import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv';
@@ -30,9 +30,9 @@ const dbConfig = getDbConfig();
 
 try {
   pool = new Pool(dbConfig);
-  console.log('✅ DB Pool created successfully.');
+  console.log('笨・DB Pool created successfully.');
 } catch (e) {
-    console.error("❌ DB Pool creation failed.", e)
+    console.error("笶・DB Pool creation failed.", e)
 }
 
 export const query = async (text: string, params?: any[]) => {
@@ -48,7 +48,7 @@ export const query = async (text: string, params?: any[]) => {
       throw error;
     }
   } else {
-    console.log('⚠️  DB pool is not available. Returning mock response.');
+    console.log('笞・・ DB pool is not available. Returning mock response.');
     return { rows: [], rowCount: 0 };
   }
 };

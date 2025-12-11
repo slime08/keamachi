@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+﻿import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
@@ -43,9 +43,9 @@ const pool = new Pool({
 (async () => {
   try {
     const result = await pool.query("SELECT NOW()");
-    console.log("DB 接続成功:", result.rows);
+    console.log("DB 謗･邯壽・蜉・", result.rows);
   } catch (e) {
-    console.error("DB 接続失敗:", e.message);
+    console.error("DB 謗･邯壼､ｱ謨・", e.message);
   } finally {
     process.exit();
   }

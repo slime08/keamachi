@@ -29,7 +29,7 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden; /* 横方向のスクロールを隠す */
+  overflow-x: hidden; /* 讓ｪ譁ｹ蜷代・繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ繧帝國縺・*/
 }
 
 .app { min-height: 100vh; max-width: 100%; }
@@ -86,12 +86,12 @@ body {
   display: flex;
   gap: 10px;
   align-items: center;
-  flex-wrap: wrap; /* 既存 - デスクトップでは折り返す */
+  flex-wrap: wrap; /* 譌｢蟄・- 繝・せ繧ｯ繝医ャ繝励〒縺ｯ謚倥ｊ霑斐☆ */
 }
 
 .nav-links a,
 .nav-links button {
-  white-space: nowrap; /* テキストの折り返しを防ぐ */
+  white-space: nowrap; /* 繝・く繧ｹ繝医・謚倥ｊ霑斐＠繧帝亟縺・*/
   color: var(--text-muted);
   text-decoration: none;
   padding: 10px 14px;
@@ -220,7 +220,7 @@ body {
 .hero-buttons {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap; /* 既存 */
+  flex-wrap: wrap; /* 譌｢蟄・*/
 }
 
 .hero-highlights {
@@ -331,7 +331,7 @@ body {
 .weekday-toggle {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap; /* 既存 */
+  flex-wrap: wrap; /* 譌｢蟄・*/
   margin-top: 12px;
 }
 
@@ -568,26 +568,26 @@ footer,
 /* Weekday filter general styles */
 .weekday-filter {
   display: flex;
-  flex-wrap: nowrap;   /* 折り返し禁止 */
+  flex-wrap: nowrap;   /* 謚倥ｊ霑斐＠遖∵ｭ｢ */
   width: 100%;
-  gap: 4px;            /* ボタン間のギャップ */
-  overflow-x: hidden;    /* 横スクロールを隠す */
-  justify-content: space-around; /* 均等に配置 */
+  gap: 4px;            /* 繝懊ち繝ｳ髢薙・繧ｮ繝｣繝・・ */
+  overflow-x: hidden;    /* 讓ｪ繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ繧帝國縺・*/
+  justify-content: space-around; /* 蝮・ｭ峨↓驟咲ｽｮ */
 }
 
 .weekday-filter button,
-.weekday-filter .availability-item { /* availability-item も曜日ボタンと似た挙動に */
-  flex: 1 1 0;         /* 全ボタン/アイテムを均等幅にする */
-  min-width: 0;        /* はみ出さないようにする */
-  white-space: nowrap; /* 文字を折り返さない */
-  padding: 6px 4px;    /* スマホでも収まるようにコンパクトに */
-  font-size: 0.8rem;   /* 必要ならフォントを小さめに */
-  text-align: center;  /* 文字を中央寄せに */
+.weekday-filter .availability-item { /* availability-item 繧よ屆譌･繝懊ち繝ｳ縺ｨ莨ｼ縺滓嫌蜍輔↓ */
+  flex: 1 1 0;         /* 蜈ｨ繝懊ち繝ｳ/繧｢繧､繝・Β繧貞插遲牙ｹ・↓縺吶ｋ */
+  min-width: 0;        /* 縺ｯ縺ｿ蜃ｺ縺輔↑縺・ｈ縺・↓縺吶ｋ */
+  white-space: nowrap; /* 譁・ｭ励ｒ謚倥ｊ霑斐＆縺ｪ縺・*/
+  padding: 6px 4px;    /* 繧ｹ繝槭・縺ｧ繧ょ庶縺ｾ繧九ｈ縺・↓繧ｳ繝ｳ繝代け繝医↓ */
+  font-size: 0.8rem;   /* 蠢・ｦ√↑繧峨ヵ繧ｩ繝ｳ繝医ｒ蟆上＆繧√↓ */
+  text-align: center;  /* 譁・ｭ励ｒ荳ｭ螟ｮ蟇・○縺ｫ */
 }
 
-/* Authページレイアウトの調整 (中央揃え) */
+/* Auth繝壹・繧ｸ繝ｬ繧､繧｢繧ｦ繝医・隱ｿ謨ｴ (荳ｭ螟ｮ謠・∴) */
 .hero-buttons {
-  justify-content: center; /* 中央揃え */
+  justify-content: center; /* 荳ｭ螟ｮ謠・∴ */
 }
 
 
@@ -599,79 +599,79 @@ footer,
 }
 
 @media (max-width: 980px) {
-  /* ヒーローセクションのレイアウトを縦積みに変更 */
+  /* 繝偵・繝ｭ繝ｼ繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｮ繝ｬ繧､繧｢繧ｦ繝医ｒ邵ｦ遨阪∩縺ｫ螟画峩 */
   .hero-inner {
-    grid-template-columns: 1fr; /* 左右2カラムから1カラムへ */
+    grid-template-columns: 1fr; /* 蟾ｦ蜿ｳ2繧ｫ繝ｩ繝縺九ｉ1繧ｫ繝ｩ繝縺ｸ */
     gap: 24px;
-    text-align: center; /* コンテンツを中央寄せに */
+    text-align: center; /* 繧ｳ繝ｳ繝・Φ繝・ｒ荳ｭ螟ｮ蟇・○縺ｫ */
   }
 
   .hero-content {
-    align-items: center; /* 中央寄せ */
+    align-items: center; /* 荳ｭ螟ｮ蟇・○ */
   }
 
   .hero h1 {
-    font-size: 38px; /* フォントサイズを少し小さく */
+    font-size: 38px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧貞ｰ代＠蟆上＆縺・*/
   }
 
   .nav-container {
-    flex-direction: column; /* ナビゲーションを縦積みに */
+    flex-direction: column; /* 繝翫ン繧ｲ繝ｼ繧ｷ繝ｧ繝ｳ繧堤ｸｦ遨阪∩縺ｫ */
     gap: 12px;
   }
 
   .nav-links {
-    flex-direction: column; /* リンクも縦積みに */
+    flex-direction: column; /* 繝ｪ繝ｳ繧ｯ繧らｸｦ遨阪∩縺ｫ */
     gap: 8px;
   }
 
-  /* 検索カードのボタンを調整 */
+  /* 讀懃ｴ｢繧ｫ繝ｼ繝峨・繝懊ち繝ｳ繧定ｪｿ謨ｴ */
   .search-card .search-row {
     flex-direction: column;
   }
   .search-card input,
   .search-card select,
   .search-card .btn {
-    width: 100%; /* 幅をフルにする */
+    width: 100%; /* 蟷・ｒ繝輔Ν縺ｫ縺吶ｋ */
   }
 
   .weekday-badge { width:26px; height:26px; font-size:11px }
 
-  /* Authページレイアウトの調整 */
+  /* Auth繝壹・繧ｸ繝ｬ繧､繧｢繧ｦ繝医・隱ｿ謨ｴ */
   .auth-shell {
-    grid-template-columns: 1fr; /* 左右2カラムから1カラムへ */
+    grid-template-columns: 1fr; /* 蟾ｦ蜿ｳ2繧ｫ繝ｩ繝縺九ｉ1繧ｫ繝ｩ繝縺ｸ */
     padding: 20px;
   }
   .auth-hero {
-    order: 2; /* フォームの下に移動 */
+    order: 2; /* 繝輔か繝ｼ繝縺ｮ荳九↓遘ｻ蜍・*/
   }
   .auth-form {
-    order: 1; /* ヒーローの上に移動 */
+    order: 1; /* 繝偵・繝ｭ繝ｼ縺ｮ荳翫↓遘ｻ蜍・*/
     padding: 1.8rem;
   }
 }
 
 @media (max-width: 768px) {
-  /* ヘッダー部分の調整 */
+  /* 繝倥ャ繝繝ｼ驛ｨ蛻・・隱ｿ謨ｴ */
   .nav-container {
-    flex-direction: row; /* 横一列に戻す */
-    justify-content: space-between; /* 要素を両端に寄せる */
-    gap: 16px; /* 既存のギャップを使用 */
+    flex-direction: row; /* 讓ｪ荳蛻励↓謌ｻ縺・*/
+    justify-content: space-between; /* 隕∫ｴ繧剃ｸ｡遶ｯ縺ｫ蟇・○繧・*/
+    gap: 16px; /* 譌｢蟄倥・繧ｮ繝｣繝・・繧剃ｽｿ逕ｨ */
   }
 
   .nav-logo .logo-text {
-    display: none; /* 「ケアマチ」の文字を非表示 */
+    display: none; /* 縲後こ繧｢繝槭メ縲阪・譁・ｭ励ｒ髱櫁｡ｨ遉ｺ */
   }
 
   .nav-links {
     flex-direction: row;
-    gap: 6px; /* ギャップをさらに小さく */
+    gap: 6px; /* 繧ｮ繝｣繝・・繧偵＆繧峨↓蟆上＆縺・*/
     flex-wrap: nowrap;
-    overflow-x: hidden; /* 横スクロールを隠す */
+    overflow-x: hidden; /* 讓ｪ繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ繧帝國縺・*/
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-bottom: 0;
-    justify-content: flex-end; /* 右寄せにする */
+    justify-content: flex-end; /* 蜿ｳ蟇・○縺ｫ縺吶ｋ */
   }
   .nav-links::-webkit-scrollbar {
     display: none;
@@ -679,15 +679,15 @@ footer,
   .nav-links a,
   .nav-links button {
     flex-shrink: 0;
-    font-size: 13px; /* フォントサイズを小さく */
-    padding: 8px 10px; /* パディングも調整 */
+    font-size: 13px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧貞ｰ上＆縺・*/
+    padding: 8px 10px; /* 繝代ョ繧｣繝ｳ繧ｰ繧りｪｿ謨ｴ */
   }
 
   .hero-buttons {
     flex-wrap: nowrap;
-    justify-content: center; /* 中央揃え */
-    gap: 8px; /* ギャップを小さく */
-    overflow-x: hidden; /* 横スクロールを隠す */
+    justify-content: center; /* 荳ｭ螟ｮ謠・∴ */
+    gap: 8px; /* 繧ｮ繝｣繝・・繧貞ｰ上＆縺・*/
+    overflow-x: hidden; /* 讓ｪ繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ繧帝國縺・*/
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -698,17 +698,17 @@ footer,
   }
   .hero-buttons .btn {
     flex-shrink: 0;
-    white-space: nowrap; /* ボタンテキストの折り返しを防ぐ */
-    padding: 10px 14px; /* ボタンのパディングを調整 */
-    font-size: 14px; /* フォントサイズも調整 */
+    white-space: nowrap; /* 繝懊ち繝ｳ繝・く繧ｹ繝医・謚倥ｊ霑斐＠繧帝亟縺・*/
+    padding: 10px 14px; /* 繝懊ち繝ｳ縺ｮ繝代ョ繧｣繝ｳ繧ｰ繧定ｪｿ謨ｴ */
+    font-size: 14px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧りｪｿ謨ｴ */
   }
 
   .weekday-toggle {
-    display: flex; /* 追加 */
-    flex-wrap: nowrap; /* 追加 */
-    overflow-x: hidden; /* 横スクロールを隠す */
-    justify-content: space-around; /* 均等配置 */
-    gap: 4px; /* ギャップをさらに小さく */
+    display: flex; /* 霑ｽ蜉 */
+    flex-wrap: nowrap; /* 霑ｽ蜉 */
+    overflow-x: hidden; /* 讓ｪ繧ｹ繧ｯ繝ｭ繝ｼ繝ｫ繧帝國縺・*/
+    justify-content: space-around; /* 蝮・ｭ蛾・鄂ｮ */
+    gap: 4px; /* 繧ｮ繝｣繝・・繧偵＆繧峨↓蟆上＆縺・*/
   }
   .weekday-toggle::-webkit-scrollbar {
     display: none;
@@ -716,30 +716,30 @@ footer,
   .weekday-toggle .btn {
     flex-shrink: 0;
     white-space: nowrap;
-    padding: 5px 6px; /* パディングをさらに小さく */
-    font-size: 12px; /* フォントサイズも小さく */
-    min-width: 30px; /* 最小幅を設定して小さくなりすぎないように */
+    padding: 5px 6px; /* 繝代ョ繧｣繝ｳ繧ｰ繧偵＆繧峨↓蟆上＆縺・*/
+    font-size: 12px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧ょｰ上＆縺・*/
+    min-width: 30px; /* 譛蟆丞ｹ・ｒ險ｭ螳壹＠縺ｦ蟆上＆縺上↑繧翫☆縺弱↑縺・ｈ縺・↓ */
   }
 
-  /* 詳細ページ - 空き状況 */
+  /* 隧ｳ邏ｰ繝壹・繧ｸ - 遨ｺ縺咲憾豕・*/
   .availability-grid {
-    grid-template-columns: repeat(7, 1fr); /* 7列固定を維持 */
-    gap: 2px; /* ギャップをさらに小さく */
+    grid-template-columns: repeat(7, 1fr); /* 7蛻怜崋螳壹ｒ邯ｭ謖・*/
+    gap: 2px; /* 繧ｮ繝｣繝・・繧偵＆繧峨↓蟆上＆縺・*/
   }
   .availability-item {
-    padding: 0.3rem; /* パディングをさらに小さく */
-    gap: 0.1rem; /* ギャップをさらに小さく */
+    padding: 0.3rem; /* 繝代ョ繧｣繝ｳ繧ｰ繧偵＆繧峨↓蟆上＆縺・*/
+    gap: 0.1rem; /* 繧ｮ繝｣繝・・繧偵＆繧峨↓蟆上＆縺・*/
   }
   .availability-day {
-    font-size: 10px; /* フォントサイズを小さく */
+    font-size: 10px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧貞ｰ上＆縺・*/
   }
   .availability-badge {
-    width: 26px; /* バッジをさらに小さく */
+    width: 26px; /* 繝舌ャ繧ｸ繧偵＆繧峨↓蟆上＆縺・*/
     height: 26px;
     font-size: 14px;
   }
   .availability-status {
-    font-size: 9px; /* フォントサイズを小さく */
+    font-size: 9px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧貞ｰ上＆縺・*/
   }
 
   .dashboard-header {
@@ -793,10 +793,10 @@ footer,
     grid-template-columns: 1fr;
   }
 
-  /* 検索カードの入力フィールドと選択肢の幅 */
+  /* 讀懃ｴ｢繧ｫ繝ｼ繝峨・蜈･蜉帙ヵ繧｣繝ｼ繝ｫ繝峨→驕ｸ謚櫁い縺ｮ蟷・*/
   .search-card input,
   .search-card select {
-    min-width: unset; /* 最小幅をリセット */
+    min-width: unset; /* 譛蟆丞ｹ・ｒ繝ｪ繧ｻ繝・ヨ */
   }
 }
 
@@ -805,22 +805,23 @@ footer,
   .search-bar input { width:100%; }
   .hero h1 { font-size:28px; }
   .auth-form {
-    padding: 1.6rem; /* Authフォームのパディングを調整 */
+    padding: 1.6rem; /* Auth繝輔か繝ｼ繝縺ｮ繝代ョ繧｣繝ｳ繧ｰ繧定ｪｿ謨ｴ */
   }
 }
 
 @media (max-width: 480px) {
-  /* グローバルなパディングの調整 */
+  /* 繧ｰ繝ｭ繝ｼ繝舌Ν縺ｪ繝代ョ繧｣繝ｳ繧ｰ縺ｮ隱ｿ謨ｴ */
   .container {
-    padding: 0 10px; /* 左右のパディングを小さく */
+    padding: 0 10px; /* 蟾ｦ蜿ｳ縺ｮ繝代ョ繧｣繝ｳ繧ｰ繧貞ｰ上＆縺・*/
   }
 
-  /* さらに小さい画面での調整 */
+  /* 縺輔ｉ縺ｫ蟆上＆縺・判髱｢縺ｧ縺ｮ隱ｿ謨ｴ */
   .nav-links {
-    gap: 4px; /* ギャップをさらに小さく */
+    gap: 4px; /* 繧ｮ繝｣繝・・繧偵＆繧峨↓蟆上＆縺・*/
   }
   .nav-links a,
   .nav-links button {
+    flex-shrink: 0;
     font-size: 12px;
     padding: 6px 8px;
   }
@@ -840,10 +841,30 @@ footer,
   }
 
   .hero h1 {
-    font-size: 24px; /* さらに小さく */
+    font-size: 24px; /* 縺輔ｉ縺ｫ蟆上＆縺・*/
   }
   .hero p {
-    font-size: 16px; /* 本文のフォントサイズも調整 */
+    font-size: 16px; /* 譛ｬ譁・・繝輔か繝ｳ繝医し繧､繧ｺ繧りｪｿ謨ｴ */
+  }
+
+  /* 隧ｳ邏ｰ繝壹・繧ｸ - 遨ｺ縺咲憾豕・*/
+  .availability-grid {
+    gap: 0px; /* 繧ｮ繝｣繝・・繧偵＆繧峨↓蟆上＆縺・*/
+  }
+  .availability-item {
+    padding: 0.1rem; /* 繝代ョ繧｣繝ｳ繧ｰ繧偵＆繧峨↓蟆上＆縺・*/
+    gap: 0rem; /* 繧ｮ繝｣繝・・繧偵＆繧峨↓蟆上＆縺・*/
+  }
+  .availability-day {
+    font-size: 9px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧偵＆繧峨↓蟆上＆縺・*/
+  }
+  .availability-badge {
+    width: 22px; /* 繝舌ャ繧ｸ繧偵＆繧峨↓蟆上＆縺・*/
+    height: 22px;
+    font-size: 12px;
+  }
+  .availability-status {
+    font-size: 8px; /* 繝輔か繝ｳ繝医し繧､繧ｺ繧偵＆繧峨↓蟆上＆縺・*/
   }
 }
 
@@ -879,4 +900,3 @@ footer,
 @media (max-width: 980px) {
   .weekday-badge { width:26px; height:26px; font-size:11px }
 }
-

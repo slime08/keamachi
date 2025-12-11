@@ -1,4 +1,4 @@
-// Quick DB connection test for migrations troubleshooting
+﻿// Quick DB connection test for migrations troubleshooting
 import dotenv from 'dotenv';
 import { Client } from 'pg';
 import fs from 'fs';

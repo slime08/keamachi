@@ -1,51 +1,88 @@
-import pkg from 'pg';
+﻿import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv';
-import fs from 'fs/promises';
+import fsPromises from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Load .env from current working directory first
 dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'password',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  database: process.env.DB_NAME || 'care_matching'
-});
+// If top-level SUPABASE_URL / POSTGRES_URL are not present, try loading keamachi-api/.env
+if (!process.env.SUPABASE_URL && !process.env.POSTGRES_URL) {
+  const altEnv = path.resolve(__dirname, '..', '..', 'keamachi-api', '.env');
+  if (fs.existsSync(altEnv)) {
+    dotenv.config({ path: altEnv });
+    console.log(`Loaded environment from ${altEnv}`);
+  }
+}
+
+const getDbConfig = () => {
+  if (process.env.SUPABASE_URL) {
+    console.log("Using SUPABASE_URL for database connection for migrations.");
+    // Allow an explicit development override to relax TLS validation when
+    // connecting to a database with a self-signed certificate.
+    // Set DEV_ALLOW_INSECURE_TLS=true in your local .env to enable.
+    // This MUST NOT be enabled in production (NODE_ENV=production).
+    if (process.env.DEV_ALLOW_INSECURE_TLS === 'true' && process.env.NODE_ENV !== 'production') {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      console.warn('DEV_ALLOW_INSECURE_TLS is enabled: TLS certificate validation is disabled for this process.');
+    }
+    return { connectionString: process.env.SUPABASE_URL + "?sslmode=require", ssl: { rejectUnauthorized: false } };
+  } else if (process.env.POSTGRES_URL) {
+    console.log("Using POSTGRES_URL (Vercel Postgres) for database connection for migrations.");
+    if (process.env.DEV_ALLOW_INSECURE_TLS === 'true' && process.env.NODE_ENV !== 'production') {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+      console.warn('DEV_ALLOW_INSECURE_TLS is enabled: TLS certificate validation is disabled for this process.');
+    }
+    return { connectionString: process.env.POSTGRES_URL + "?sslmode=require", ssl: { rejectUnauthorized: false } };
+  } else {
+    console.log("Using local .env variables for database connection for migrations.");
+    return {
+      user: process.env.DB_USER || 'postgres',
+      password: process.env.DB_PASSWORD || 'password',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '5432'),
+      database: process.env.DB_NAME || 'care_matching'
+      , ssl: { rejectUnauthorized: false }
+    };
+  }
+};
+
+  const pool = new Pool(getDbConfig());
 
 const runMigrations = async () => {
   const client = await pool.connect();
   try {
-    // 1. マイグレーション管理テーブルを作成
+    // 1. 繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ邂｡逅・ユ繝ｼ繝悶Ν繧剃ｽ懈・
     await client.query(`
       CREATE TABLE IF NOT EXISTS schema_migrations (
         version VARCHAR(255) PRIMARY KEY
       );
     `);
 
-    // 2. 実行済みのマイグレーションを取得
+    // 2. 螳溯｡梧ｸ医∩縺ｮ繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繧貞叙蠕・
     const executedMigrationsResult = await client.query('SELECT version FROM schema_migrations');
     const executedVersions = executedMigrationsResult.rows.map(r => r.version);
     console.log('Already executed versions:', executedVersions);
 
-    // 3. ディレクトリからマイグレーションファイルを取得
-    const migrationFiles = (await fs.readdir(__dirname))
+    // 3. 繝・ぅ繝ｬ繧ｯ繝医Μ縺九ｉ繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繝輔ぃ繧､繝ｫ繧貞叙蠕・
+    const migrationFiles = (await fsPromises.readdir(__dirname))
       .filter(file => file.endsWith('.sql'))
-      .sort(); // ファイル名でソートして実行順を保証
+      .sort(); // 繝輔ぃ繧､繝ｫ蜷阪〒繧ｽ繝ｼ繝医＠縺ｦ螳溯｡碁・ｒ菫晁ｨｼ
 
-    // 4. 未実行のマイグレーションを実行
+    // 4. 譛ｪ螳溯｡後・繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繧貞ｮ溯｡・
     for (const file of migrationFiles) {
       if (!executedVersions.includes(file)) {
         console.log(`Running migration: ${file}`);
         
         const filePath = path.join(__dirname, file);
-        const sql = await fs.readFile(filePath, 'utf-8');
+        const sql = await fsPromises.readFile(filePath, 'utf-8');
 
-        // トランザクション内で実行
+        // 繝医Λ繝ｳ繧ｶ繧ｯ繧ｷ繝ｧ繝ｳ蜀・〒螳溯｡・
         try {
           await client.query('BEGIN');
           await client.query(sql);
@@ -55,7 +92,7 @@ const runMigrations = async () => {
         } catch (err) {
           await client.query('ROLLBACK');
           console.error(`Failed to migrate ${file}. Rolled back.`, err);
-          throw err; // エラーが発生したら以降のマイグレーションを中止
+          throw err; // 繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺溘ｉ莉･髯阪・繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繧剃ｸｭ豁｢
         }
       }
     }
@@ -63,7 +100,7 @@ const runMigrations = async () => {
     console.log('Migrations completed successfully.');
 
   } catch (error) {
-    console.error('Migration process failed.');
+    console.error('Migration process failed.', error);
   } finally {
     client.release();
     await pool.end();

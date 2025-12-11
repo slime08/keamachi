@@ -48,22 +48,22 @@ export default function Messaging() {
       const mockConversations: Conversation[] = [
         {
           id: 1,
-          facilityName: 'サンシャイン福祉センター',
-          lastMessage: '次の訪問は月曜日の10時でお願いします',
+          facilityName: 'オンライン福祉センター',
+          lastMessage: '次の訪問は来週の火曜日の10時でお願いします。',
           lastMessageTime: '2025-12-08 14:30',
           unreadCount: 2
         },
         {
           id: 2,
-          facilityName: 'ケアホーム山田',
-          lastMessage: 'マッチングありがとうございます。詳細についてお話しします。',
+          facilityName: 'ケアマチ山手',
+          lastMessage: 'マッチングありがとうございます。詳細についてご連絡します。',
           lastMessageTime: '2025-12-07 16:45',
           unreadCount: 0
         },
         {
           id: 3,
-          facilityName: 'デイサービス太陽',
-          lastMessage: 'お試し利用のご予定はいかがでしょうか',
+          facilityName: 'デイサービス港',
+          lastMessage: 'ご利用の希望はございますか？',
           lastMessageTime: '2025-12-06 09:15',
           unreadCount: 1
         }
@@ -82,23 +82,23 @@ export default function Messaging() {
       const mockMessages: Message[] = [
         {
           id: 1,
-          sender: 'ケアマッチ',
+          sender: 'ケアマチ',
           senderRole: 'facility',
-          content: 'マッチングのお申し込みをありがとうございます。',
+          content: 'マッチングのお申し込みありがとうございます。',
           timestamp: '2025-12-05 10:00'
         },
         {
           id: 2,
           sender: 'あなた',
           senderRole: 'user',
-          content: 'こちらこそ、よろしくお願いします。',
+          content: 'こちらこそ、よろしくお願いいたします。',
           timestamp: '2025-12-05 10:15'
         },
         {
           id: 3,
-          sender: 'ケアマッチ',
+          sender: 'ケアマチ',
           senderRole: 'facility',
-          content: '次の訪問は月曜日の10時でお願いします。ご都合はいかがでしょうか？',
+          content: '次の訪問は来週の火曜日の10時でお願いします。ご都合はいかがでしょうか？',
           timestamp: '2025-12-08 14:30'
         }
       ]

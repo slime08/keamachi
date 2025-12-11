@@ -1,25 +1,25 @@
-import express from 'express';
+﻿import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { query } from '../db.js';
 
 const router = express.Router();
 
-// ユーザー登録
+// 繝ｦ繝ｼ繧ｶ繝ｼ逋ｻ骭ｲ
 router.post('/register', async (req, res) => {
   try {
     const { email, password, name, role, facility_name } = req.body;
 
-    // メール重複チェック
+    // 繝｡繝ｼ繝ｫ驥崎､・メ繧ｧ繝・け
     const existing = await query('SELECT * FROM users WHERE email = $1', [email]);
     if (existing.rows.length > 0) {
       return res.status(409).json({ error: 'Email already exists' });
     }
 
-    // パスワードハッシュ
+    // 繝代せ繝ｯ繝ｼ繝峨ワ繝・す繝･
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ユーザー作成
+    // 繝ｦ繝ｼ繧ｶ繝ｼ菴懈・
     const result = await query(
       'INSERT INTO users (email, password, name, role, facility_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, name, role',
       [email, hashedPassword, name, role, facility_name]
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// ログイン
+// 繝ｭ繧ｰ繧､繝ｳ
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;

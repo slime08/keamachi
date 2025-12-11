@@ -2,14 +2,19 @@
   "name": "care-matching-client",
   "private": true,
   "version": "0.0.1",
+  "homepage": "https://slime08.github.io/keamachi/",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.87.1",
     "axios": "^1.6.0",
+    "care-matching-app": "file:..",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.10.1",
@@ -19,6 +24,7 @@
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",
+    "gh-pages": "^6.3.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
   }

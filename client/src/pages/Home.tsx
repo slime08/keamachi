@@ -1,7 +1,9 @@
+
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BrowseFacilities from './Browse'
+import { SERVICE_OPTIONS } from '../constants/services'; // SERVICE_OPTIONS をインポート
 
 interface Facility {
   id: number
@@ -74,12 +76,9 @@ export default function Home() {
           <input type="text" placeholder="事業所名・住所で検索" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} style={{flex:1}} />
           <select value={selectedService} onChange={e=>setSelectedService(e.target.value)}>
             <option value="all">すべての種別</option>
-            <option value="訪問介護">訪問介護</option>
-            <option value="デイサービス">デイサービス</option>
-            <option value="グループホーム">グループホーム</option>
-            <option value="老健施設">老健施設</option>
-            <option value="障害福祉">障害福祉</option>
-            <option value="児童福祉">児童福祉</option>
+            {SERVICE_OPTIONS.map(service => (
+              <option key={service.key} value={service.label}>{service.label}</option>
+            ))}
           </select>
           <button className="btn btn-primary">検索</button>
         </div>
@@ -146,27 +145,13 @@ export default function Home() {
         <div className="container">
           <h2>提供サービス</h2>
           <div className="services-grid">
-          <div className="service-item">
-            <h3>訪問介護</h3>
-            <p>自宅での生活援助や身体介護</p>
-            <span className="badge">人気</span>
-          </div>
-          <div className="service-item">
-            <h3>デイサービス</h3>
-            <p>日中の介護・リハビリサービス</p>
-          </div>
-          <div className="service-item">
-            <h3>グループホーム</h3>
-            <p>認知症対応の共同生活支援</p>
-          </div>
-          <div className="service-item">
-            <h3>老健施設</h3>
-            <p>リハビリと介護の総合施設</p>
-          </div>
-          <div className="service-item">
-            <h3>障害福祉と児童福祉</h3>
-            <p>障害者支援と児童発達支援</p>
-          </div>
+            {SERVICE_OPTIONS.map(service => (
+              <div key={service.key} className="service-item">
+                <h3>{service.label}</h3>
+                <p>自宅での生活援助や身体介護</p> {/* ※ここはダミーテキスト。必要に応じて各サービスの説明を追加 */}
+                {service.key === 'home_care' && <span className="badge">人気</span>} {/* '訪問介護' にのみ「人気」バッジを表示 */}
+              </div>
+            ))}
           </div>
         </div>
       </section>
