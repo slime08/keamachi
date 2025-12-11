@@ -1,165 +1,170 @@
-﻿# 繧ｱ繧｢繝槭メ - 遖冗･峨・繝・メ繝ｳ繧ｰ繧｢繝励Μ
+# ケアマチ - 福祉マッチングプラットフォーム
 
-遖冗･蛾未菫ゅ・莠区･ｭ謇縺ｨ蛻ｩ逕ｨ閠・ｒ繝槭ャ繝√Φ繧ｰ縺吶ｋWeb繧｢繝励Μ繧ｱ繝ｼ繧ｷ繝ｧ繝ｳ縺ｧ縺吶・
+福祉サービス利用者と事業所をマッチングするWebアプリケーションです。
 
-## 讖溯・
+## 機能
 
-### 繝ｦ繝ｼ繧ｶ繝ｼ蜷代￠讖溯・
-- 莨壼藤逋ｻ骭ｲ繝ｻ繝ｭ繧ｰ繧､繝ｳ
-- 遖冗･我ｺ区･ｭ謇縺ｮ讀懃ｴ｢繝ｻ髢ｲ隕ｧ
-- 繝槭ャ繝√Φ繧ｰ逕ｳ縺苓ｾｼ縺ｿ
-- 繝｡繝・そ繝ｼ繧ｸ繝ｳ繧ｰ讖溯・
-- 繝ｬ繝薙Η繝ｼ繝ｻ隧穂ｾ｡
+### 利用者向け機能
+- 事業所検索・詳細表示
+- マッチング依頼
+- メッセージング機能
+- お気に入り・履歴管理
 
-### 莠区･ｭ謇蜷代￠讖溯・
-- 繝励Ο繝輔ぅ繝ｼ繝ｫ逋ｻ骭ｲ繝ｻ邂｡逅・
-- 繝槭ャ繝√Φ繧ｰ逕ｳ縺苓ｾｼ縺ｿ縺ｮ遒ｺ隱阪・謇ｿ隱・
-- 繝ｦ繝ｼ繧ｶ繝ｼ縺ｨ縺ｮ繝｡繝・そ繝ｼ繧ｸ繝ｳ繧ｰ
-- 繝ｬ繝薙Η繝ｼ縺ｮ遒ｺ隱・
+### 事業所向け機能
+- 登録情報の管理・更新
+- マッチング依頼の承認・拒否
+- 利用者とのメッセージング
+- 登録利用者管理
 
-## 謚陦薙せ繧ｿ繝・け
+## 技術スタック
 
-### 繝舌ャ繧ｯ繧ｨ繝ｳ繝・
-- **繝ｩ繝ｳ繧ｿ繧､繝**: Node.js
-- **繝輔Ξ繝ｼ繝繝ｯ繝ｼ繧ｯ**: Express.js
-- **險隱・*: TypeScript
-- **繝・・繧ｿ繝吶・繧ｹ**: PostgreSQL
-- **隱崎ｨｼ**: JWT (JSON Web Token)
-- **繝ｪ繧｢繝ｫ繧ｿ繧､繝**: Socket.io
+### バックエンド
+- **ランタイム**: Node.js
+- **フレームワーク**: Express.js
+- **言語**: TypeScript
+- **データベース**: PostgreSQL
+- **認証**: JWT (JSON Web Token)
+- **リアルタイム**: Socket.io
 
-### 繝輔Ο繝ｳ繝医お繝ｳ繝・
-- **繝輔Ξ繝ｼ繝繝ｯ繝ｼ繧ｯ**: React 18
-- **險隱・*: TypeScript
-- **繝薙Ν繝峨ヤ繝ｼ繝ｫ**: Vite
-- **HTTP繧ｯ繝ｩ繧､繧｢繝ｳ繝・*: Axios
-- **繝ｪ繧｢繝ｫ繧ｿ繧､繝繧ｯ繝ｩ繧､繧｢繝ｳ繝・*: Socket.io Client
+### フロントエンド
+- **フレームワーク**: React 18
+- **言語**: TypeScript
+- **ビルドツール**: Vite
+- **HTTPクライアント**: Axios
+- **リアルタイムクライアント**: Socket.io Client
 
-## 繧､繝ｳ繧ｹ繝医・繝ｫ
+## インストール
 
-### 蜑肴署譚｡莉ｶ
+### 前提条件
 - Node.js 18+
 - PostgreSQL 12+
-- npm 縺ｾ縺溘・ yarn
+- npm または yarn
 
-### 繧ｻ繝・ヨ繧｢繝・・謇矩・
+### セットアップ手順
 
-1. **繝ｪ繝昴ず繝医Μ縺ｮ繧ｯ繝ｭ繝ｼ繝ｳ**
-```bash
-git clone <repository-url>
-cd 繧ｱ繧｢繝槭メ
+1.  **リポジトリのクローン**
+    ```bash
+    git clone <repository-url>
+    cd Keamachi
+    ```
+
+2.  **環境設定ファイルの作成**
+    ```bash
+    cp .env.example .env
+    ```
+    `.env`ファイルを編集して、データベース接続情報などを設定します。
+
+3.  **プロジェクトの依存関係のインストール**
+    ```bash
+    npm install
+    cd client && npm install && cd ..
+    cd keamachi-api && npm install && cd ..
+    ```
+
+4.  **データベースの初期化**
+    PostgreSQLを起動し、`server/migrations/001_init.sql`を実行してください。
+    ```bash
+    psql -U postgres -d care_matching -f server/migrations/001_init.sql
+    ```
+
+5.  **アプリケーションの実行**
+    ```bash
+    npm run dev
+    ```
+
+    - フロントエンド: http://localhost:5173
+    - バックエンド: http://localhost:3000
+
+## プロジェクト構造
+
+```
+Keamachi/
+├── client/                    # フロントエンド (React)
+│   ├── src/
+│   │   ├── pages/            # 各ページコンポーネント
+│   │   ├── hooks/            # カスタムフック
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── index.html
+│   ├── vite.config.ts
+│   └── package.json
+├── keamachi-api/              # Vercel Serverless API
+│   ├── api/                  # APIルート (TypeScript)
+│   ├── lib/                  # ユーティリティ
+│   ├── migrations/           # DBマイグレーション
+│   ├── server.js             # ローカル開発用APIサーバー (Express)
+│   └── package.json
+├── server/                    # バックエンド (Express) - ローカル開発用 (非推奨・今後削除予定)
+│   ├── routes/               # APIルート
+│   ├── middleware/           # ミドルウェア
+│   ├── migrations/           # DBマイグレーション
+│   ├── db.ts                # DB接続管理
+│   └── index.ts             # メインサーバー
+├── .env.example             # 環境変数テンプレート
+├── package.json             # ルートpackage.json
+└── README.md               # このファイル
 ```
 
-2. **迺ｰ蠅・ｨｭ螳壹ヵ繧｡繧､繝ｫ縺ｮ菴懈・**
-```bash
-cp .env.example .env
-```
-`.env`繝輔ぃ繧､繝ｫ繧堤ｷｨ髮・＠縺ｦ縲√ョ繝ｼ繧ｿ繝吶・繧ｹ謗･邯壽ュ蝣ｱ繧定ｨｭ螳壹＠縺ｾ縺吶・
+## APIエンドポイント
 
-3. **萓晏ｭ倥ヱ繝・こ繝ｼ繧ｸ縺ｮ繧､繝ｳ繧ｹ繝医・繝ｫ**
-```bash
-npm install
-cd client && npm install && cd ..
-```
+### 認証
+- `POST /api/auth/register` - ユーザー登録
+- `POST /api/auth/login` - ログイン
 
-4. **繝・・繧ｿ繝吶・繧ｹ縺ｮ蛻晄悄蛹・*
-PostgreSQL繧定ｵｷ蜍輔＠縺ｦ縲～server/migrations/001_init.sql`繧貞ｮ溯｡後＠縺ｾ縺呻ｼ・
-```bash
-psql -U postgres -d care_matching -f server/migrations/001_init.sql
-```
+### 事業所
+- `GET /api/facilities` - 事業所一覧
+- `GET /api/facilities/:id` - 事業所詳細
+- `POST /api/facilities` - 事業所作成 (要認証)
 
-5. **髢狗匱繧ｵ繝ｼ繝舌・縺ｮ襍ｷ蜍・*
-```bash
-npm run dev
-```
+### ユーザー
+- `GET /api/users/:id` - ユーザープロフィール
+- `PUT /api/users/:id` - プロフィール編集 (要認証)
 
-- 繝輔Ο繝ｳ繝医お繝ｳ繝・ http://localhost:5173
-- 繝舌ャ繧ｯ繧ｨ繝ｳ繝・ http://localhost:3000
+### マッチング
+- `GET /api/matching/suggestions` - マッチング候補一覧
+- `POST /api/matching` - マッチング依頼
+- `PUT /api/matching/:id/accept` - マッチング承認
 
-## 繝励Ο繧ｸ繧ｧ繧ｯ繝域ｧ矩
+### メッセージング
+- `GET /api/messages/conversation/:id` - メッセージ取得
+- `POST /api/messages` - メッセージ送信
 
-```
-繧ｱ繧｢繝槭メ/
-笏懌楳笏 client/                    # 繝輔Ο繝ｳ繝医お繝ｳ繝会ｼ・eact・・
-笏・  笏懌楳笏 src/
-笏・  笏・  笏懌楳笏 pages/            # 繝壹・繧ｸ繧ｳ繝ｳ繝昴・繝阪Φ繝・
-笏・  笏・  笏懌楳笏 hooks/            # 繧ｫ繧ｹ繧ｿ繝繝輔ャ繧ｯ
-笏・  笏・  笏懌楳笏 App.tsx
-笏・  笏・  笏披楳笏 main.tsx
-笏・  笏懌楳笏 index.html
-笏・  笏懌楳笏 vite.config.ts
-笏・  笏披楳笏 package.json
-笏懌楳笏 server/                    # 繝舌ャ繧ｯ繧ｨ繝ｳ繝会ｼ・xpress・・
-笏・  笏懌楳笏 routes/               # API繝ｫ繝ｼ繝・
-笏・  笏懌楳笏 middleware/           # 繝溘ラ繝ｫ繧ｦ繧ｧ繧｢
-笏・  笏懌楳笏 migrations/           # DB繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ
-笏・  笏懌楳笏 db.ts                # DB謗･邯夊ｨｭ螳・
-笏・  笏懌楳笏 index.ts             # 繝｡繧､繝ｳ繧ｵ繝ｼ繝舌・
-笏・  笏披楳笏 package.json
-笏懌楳笏 .env.example             # 迺ｰ蠅・､画焚繝・Φ繝励Ξ繝ｼ繝・
-笏懌楳笏 package.json             # 繝ｫ繝ｼ繝・ackage.json
-笏披楳笏 README.md               # 縺薙・繝輔ぃ繧､繝ｫ
-```
+## 開発ガイド
 
-## API 繧ｨ繝ｳ繝峨・繧､繝ｳ繝・
-
-### 隱崎ｨｼ
-- `POST /api/auth/register` - 譁ｰ隕冗匳骭ｲ
-- `POST /api/auth/login` - 繝ｭ繧ｰ繧､繝ｳ
-
-### 莠区･ｭ謇
-- `GET /api/facilities` - 莠区･ｭ謇荳隕ｧ
-- `GET /api/facilities/:id` - 莠区･ｭ謇隧ｳ邏ｰ
-- `POST /api/facilities` - 莠区･ｭ謇菴懈・・郁ｪ崎ｨｼ蠢・ｦ・ｼ・
-
-### 繝ｦ繝ｼ繧ｶ繝ｼ
-- `GET /api/users/:id` - 繝ｦ繝ｼ繧ｶ繝ｼ繝励Ο繝輔ぅ繝ｼ繝ｫ
-- `PUT /api/users/:id` - 繝励Ο繝輔ぅ繝ｼ繝ｫ譖ｴ譁ｰ・郁ｪ崎ｨｼ蠢・ｦ・ｼ・
-
-### 繝槭ャ繝√Φ繧ｰ
-- `GET /api/matching/suggestions` - 繝槭ャ繝√Φ繧ｰ謠先｡井ｸ隕ｧ
-- `POST /api/matching` - 繝槭ャ繝√Φ繧ｰ逕ｳ縺苓ｾｼ縺ｿ
-- `PUT /api/matching/:id/accept` - 繝槭ャ繝√Φ繧ｰ謇ｿ隱・
-
-### 繝｡繝・そ繝ｼ繧ｸ
-- `GET /api/messages/conversation/:id` - 繝｡繝・そ繝ｼ繧ｸ蜿門ｾ・
-- `POST /api/messages` - 繝｡繝・そ繝ｼ繧ｸ騾∽ｿ｡
-
-## 髢狗匱繧ｬ繧､繝・
-
-### 繧ｵ繝ｼ繝舌・縺ｮ螳溯｡・
+### サーバーの起動
 ```bash
 npm run server:dev
 ```
 
-### 繧ｯ繝ｩ繧､繧｢繝ｳ繝医・螳溯｡・
+### クライアントの起動
 ```bash
 npm run client:dev
 ```
 
-### 繝薙Ν繝・
+### ビルド
 ```bash
 npm run build
 ```
 
-## 繝医Λ繝悶Ν繧ｷ繝･繝ｼ繝・ぅ繝ｳ繧ｰ
+## トラブルシューティング
 
-### 繝・・繧ｿ繝吶・繧ｹ謗･邯壹お繝ｩ繝ｼ
-- PostgreSQL縺瑚ｵｷ蜍輔＠縺ｦ縺・ｋ縺狗｢ｺ隱・
-- `.env`繝輔ぃ繧､繝ｫ縺ｮ繝・・繧ｿ繝吶・繧ｹ謗･邯壽ュ蝣ｱ繧堤｢ｺ隱・
-- 繝・・繝悶Ν縺御ｽ懈・縺輔ｌ縺ｦ縺・ｋ縺狗｢ｺ隱・
+### データベース接続エラー
+- PostgreSQLが起動しているか確認
+- `.env`ファイルのデータベース接続情報を確認
+- データベースが初期化されているか確認
 
-### 繝昴・繝育ｫｶ蜷・
-- 繝昴・繝・000縺御ｽｿ逕ｨ荳ｭ縺ｮ蝣ｴ蜷医～.env`縺ｮ`PORT`繧貞､画峩
-- 繝昴・繝・173縺御ｽｿ逕ｨ荳ｭ縺ｮ蝣ｴ蜷医～client/vite.config.ts`繧堤ｷｨ髮・
+### ポート競合
+- ポート3000が使用中の場合、`.env`の`PORT`を別な値に変更
+- ポート5173が使用中の場合、`client/vite.config.ts`を編集
 
-## 繝ｩ繧､繧ｻ繝ｳ繧ｹ
+## ライセンス
 
 MIT
 
-## 雋｢迪ｮ
+## 貢献
 
-繝励Ν繝ｪ繧ｯ繧ｨ繧ｹ繝医ｒ豁楢ｿ弱＠縺ｾ縺吶ょ､ｧ縺阪↑螟画峩縺ｮ蝣ｴ蜷医・縲√∪縺喨ssue繧帝幕縺・※螟画峩蜀・ｮｹ繧定ｪｬ譏弱＠縺ｦ縺上□縺輔＞縲・
+プルリクエストを歓迎します。大きな変更の場合は、まずissueをオープンして変更内容を議論してください。
 
-## 繧ｵ繝昴・繝・
+## サポート
 
-蝠城｡後′逋ｺ逕溘＠縺溷ｴ蜷医・縲；itHub縺ｮissue繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｧ蝣ｱ蜻翫＠縺ｦ縺上□縺輔＞縲・
+不具合報告やご質問は、GitHubのissueセクションでお問い合わせください。
