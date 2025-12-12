@@ -394,23 +394,15 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
                 </div>
                 <div className="card-body">
                   <h3 className="facility-name">{f.name}</h3>
-                  <p className="facility-meta-info">{f.serviceType} / {f.location}</p>
+                  <p className="facility-meta-info">{f.location}</p>
                   
                   <div className="facility-tags">
                     <span className="tag-badge">{f.serviceType}</span>
-                    {/* Facility strength tags can be added here if available in data */}
                   </div>
 
                   <div className="facility-availability">
                     <AvailabilityBadges availability={f.availability} />
                   </div>
-
-                  <div className="facility-rating">
-                    <span className="rating-stars">⭐ {f.rating || 'N/A'}</span>
-                    <span className="rating-reviews">({f.reviews || 0}件)</span>
-                  </div>
-
-                  <p className="facility-description facility-description-clamp">{f.description || '事業所の説明がありません。'}</p>
                   
                   <span className="details-link">詳細を見る</span>
                 </div>

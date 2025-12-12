@@ -40,6 +40,10 @@ export default function Home() {
   const [selectedService, setSelectedService] = useState('all')
   const [selectedLocation, setSelectedLocation] = useState('all')
   const [selectedWeekday, setSelectedWeekday] = useState<'all'|'mon'|'tue'|'wed'|'thu'|'fri'|'sat'|'sun'>('all')
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Determine if any advanced filters are active
+  const areFiltersActive = selectedWeekday !== 'all'; // Expand this logic for more filters
 
   return (
     <div className="home-page">
@@ -66,138 +70,208 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ヒーローセクション */}
-      <section className="hero">
-        <div className="container hero-inner">
-          <div className="hero-content">
-            <h1>福祉サービスと利用者を<br />つなぐモダンなマッチング</h1>
-            <p>質の高い福祉サービスを、必要な人へ。事業所と利用者の最適なマッチングを、シンプルで直感的な体験でサポートします。</p>
-            <div className="hero-buttons">
-              <Link to="/register?role=user" className="btn btn-primary">利用者として登録</Link>
-              <Link to="/register?role=facility" className="btn btn-secondary">事業所として登録</Link>
+      {/* Main Content - Search First */}
+      <main className="container search-first-view">
+        <header className="search-header">
+          <h1>事業所を探す</h1>
+          <p>地域や条件からあなたに合った事業所を探せます</p>
+        </header>
+
+        <div className="search-controls">
+          <div className="main-search-inputs">
+            <input type="text" placeholder="キーワードで検索" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+            <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
+              <option value="all">すべての種別</option>
+              {SERVICE_OPTIONS.map(service => (
+                <option key={service.key} value={service.label}>{service.label}</option>
+              ))}
+            </select>
+          </div>
+          <button 
+            className={`advanced-search-button ${areFiltersActive ? 'filter-active' : ''}`}
+            onClick={() => setIsModalOpen(true)}
+          >
+            詳細検索
+          </button>
+        </div>
+      </main>
+
+      {/* 事業所一覧 */}
+      <section className="container featured-section" style={{paddingTop:24}}>
+        <h2>事業所一覧</h2>
+        <BrowseFacilities 
+          initialSearch={searchQuery} 
+          initialService={selectedService} 
+          initialLocation={selectedLocation} 
+          initialWeekday={selectedWeekday} 
+          showControls={false} 
+        />
+      </section>
+      
+      {/* --- 以下、優先度を下げた既存コンテンツ --- */}
+      <div className="legacy-content">
+        {/* ヒーローセクション */}
+        <section className="hero">
+          <div className="container hero-inner">
+            <div className="hero-content">
+              <h1>福祉サービスと利用者を<br />つなぐモダンなマッチング</h1>
+              <p>質の高い福祉サービスを、必要な人へ。事業所と利用者の最適なマッチングを、シンプルで直感的な体験でサポートします。</p>
+              <div className="hero-buttons">
+                <Link to="/register?role=user" className="btn btn-primary">利用者として登録</Link>
+                <Link to="/register?role=facility" className="btn btn-secondary">事業所として登録</Link>
+              </div>
+            </div>
+            <div className="hero-illustration card">
+              <img
+                src={lpImage}
+                alt="ケアマチの利用イメージ"
+                className="hero-image"
+              />
             </div>
           </div>
-          <div className="hero-illustration card">
-            <img
-              src={lpImage}
-              alt="ケアマチの利用イメージ"
-              className="hero-image"
-            />
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Search card overlapping hero */}
-      <p className="search-card-pre-text">条件を選んで、あなたに合う事業所を探しましょう</p>
-      <div className="container search-card home-search-card">
-        <div className="search-row">
-          <input type="text" placeholder="事業所名・住所で検索" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} style={{flex:1}} />
-          <select value={selectedService} onChange={e=>setSelectedService(e.target.value)}>
-            <option value="all">すべての種別</option>
-            {SERVICE_OPTIONS.map(service => (
-              <option key={service.key} value={service.label}>{service.label}</option>
-            ))}
-          </select>
-          <button className="btn btn-primary home-search-button">検索</button>
-        </div>
-        <div className="weekday-toggle weekday-filter">
-          {[['all','すべて'],['mon','月'],['tue','火'],['wed','水'],['thu','木'],['fri','金'],['sat','土'],['sun','日']].map(([k,label])=> {
-            const isSelected = selectedWeekday === k;
-            const isDimmed = selectedWeekday === 'all' && k !== 'all';
-            let buttonClass = 'btn ';
-            if (isSelected) {
-              buttonClass += 'btn-primary';
-            } else {
-              buttonClass += 'btn-ghost';
-            }
-            if (isDimmed) {
-              buttonClass += ' dimmed';
-            }
-            return (
-              <button key={k} onClick={()=>setSelectedWeekday(k as any)} className={buttonClass}>{label}</button>
-            )
-          })}
-        </div>
-      </div>
-      
-          {/* 事業所一覧（ホームで表示） */}
-          <section className="container featured-section" style={{paddingTop:24}}>
-            <h2>事業所一覧</h2>
-            <BrowseFacilities initialSearch={searchQuery} initialService={selectedService} initialLocation={selectedLocation} initialWeekday={selectedWeekday} showControls={false} />
-          </section>
-
-      {/* 特徴セクション */}
-      <section id="features" className="features">
-        <div className="container">
-          <h2>ケアマチの特徴</h2>
-          <div className="features-grid">
-          <div className="feature-card">
-            <div className="feature-icon">🔍</div>
-            <h3>簡単検索</h3>
-            <p>住所、サービス種別など、様々な条件から<br />
-               あなたに合った事業所を簡単に検索できます。</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">⭐</div>
-            <h3>信頼できる評価</h3>
-            <p>実際の利用者による詳細なレビューで、<br />
-               事業所の特徴が一目瞭然です。</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">💬</div>
-            <h3>直接やりとり</h3>
-            <p>アプリ内メッセージで事業所と<br />
-               直接コミュニケーションできます。</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">✅</div>
-            <h3>安全で確実</h3>
-            <p>すべての情報は暗号化され、<br />
-               個人情報の保護に万全を尽くしています。</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">🎯</div>
-            <h3>マッチング支援</h3>
-            <p>AIが最適な事業所を推奨し、<br />
-               効率的なマッチングをサポートします。</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">📱</div>
-            <h3>24/7 利用可能</h3>
-            <p>いつでも、どこでも、スマートフォンから<br />
-               事業所情報を確認できます。</p>
-          </div>
-          </div>
-        </div>
-      </section>
-
-      {/* サービス種別セクション */}
-      <section id="services" className="services">
-        <div className="container">
-          <h2>提供サービス</h2>
-          <div className="services-grid">
-            {SERVICE_OPTIONS.map(service => (
-              <div key={service.key} className="service-item">
-                <h3>{service.label}</h3>
-                <p>自宅での生活援助や身体介護</p> {/* ※ここはダミーテキスト。必要に応じて各サービスの説明を追加 */}
-                {service.key === 'home_care' && <span className="badge">人気</span>} {/* '訪問介護' にのみ「人気」バッジを表示 */}
+        {/* 特徴セクション */}
+        <section id="features" className="features">
+          <div className="container">
+            <h2>ケアマチの特徴</h2>
+            <div className="features-grid">
+              <div className="feature-card">
+                <div className="feature-icon">🔍</div>
+                <h3>簡単検索</h3>
+                <p>住所、サービス種別など、様々な条件から<br />
+                   あなたに合った事業所を簡単に検索できます。</p>
               </div>
-            ))}
+              <div className="feature-card">
+                <div className="feature-icon">⭐</div>
+                <h3>信頼できる評価</h3>
+                <p>実際の利用者による詳細なレビューで、<br />
+                   事業所の特徴が一目瞭然です。</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">💬</div>
+                <h3>直接やりとり</h3>
+                <p>アプリ内メッセージで事業所と<br />
+                   直接コミュニケーションできます。</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">✅</div>
+                <h3>安全で確実</h3>
+                <p>すべての情報は暗号化され、<br />
+                   個人情報の保護に万全を尽くしています。</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">🎯</div>
+                <h3>マッチング支援</h3>
+                <p>AIが最適な事業所を推奨し、<br />
+                   効率的なマッチングをサポートします。</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">📱</div>
+                <h3>24/7 利用可能</h3>
+                <p>いつでも、どこでも、スマートフォンから<br />
+                   事業所情報を確認できます。</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA セクション */}
-      <section className="cta">
-        <div className="container">
-          <h2>今すぐケアマチを始めましょう</h2>
-          <p>質の高い福祉サービスとのマッチングは、ケアマチで。</p>
-          <div className="cta-buttons">
-            <a href="/browse" className="btn btn-large btn-primary">事業所を探す</a>
-            <a href="/register" className="btn btn-large btn-secondary">新規登録</a>
+        {/* サービス種別セクション */}
+        <section id="services" className="services">
+          <div className="container">
+            <h2>提供サービス</h2>
+            <div className="service-groups">
+              <div className="service-group">
+                <h4>訪問</h4>
+                <div className="services-grid">
+                  {SERVICE_OPTIONS.filter(s => ['home_care', 'home_nursing', 'home_rehab'].includes(s.key)).map(service => (
+                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                  ))}
+                </div>
+              </div>
+              <div className="service-group">
+                <h4>通所</h4>
+                <div className="services-grid">
+                  {SERVICE_OPTIONS.filter(s => ['day_service', 'day_rehab'].includes(s.key)).map(service => (
+                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                  ))}
+                </div>
+              </div>
+              <div className="service-group">
+                <h4>入居・宿泊</h4>
+                <div className="services-grid">
+                  {SERVICE_OPTIONS.filter(s => ['short_stay', 'group_home', 'nursing_home', 'senior_housing'].includes(s.key)).map(service => (
+                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                  ))}
+                </div>
+              </div>
+              <div className="service-group">
+                <h4>障害・児童</h4>
+                <div className="services-grid">
+                  {SERVICE_OPTIONS.filter(s => ['disability_daycare', 'after_school', 'child_development'].includes(s.key)).map(service => (
+                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                  ))}
+                </div>
+              </div>
+              <div className="service-group">
+                <h4>就労・相談</h4>
+                <div className="services-grid">
+                  {SERVICE_OPTIONS.filter(s => ['employment_support_a', 'employment_support_b', 'consultation_support', 'care_manager'].includes(s.key)).map(service => (
+                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA セクション */}
+        <section className="cta">
+          <div className="container">
+            <h2>今すぐケアマチを始めましょう</h2>
+            <p>質の高い福祉サービスとのマッチングは、ケアマチで。</p>
+            <div className="cta-buttons">
+              <a href="/browse" className="btn btn-large btn-primary">事業所を探す</a>
+              <a href="/register" className="btn btn-large btn-secondary">新規登録</a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* 詳細検索モーダル */}
+      {isModalOpen && (
+        <div className="advanced-search-modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="advanced-search-modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>詳細検索</h3>
+              <button className="close-button" onClick={() => setIsModalOpen(false)}>×</button>
+            </div>
+            <div className="modal-body">
+              <fieldset className="filter-group">
+                <legend>曜日</legend>
+                <div className="weekday-checkbox-group">
+                  {[['all','すべて'],['mon','月'],['tue','火'],['wed','水'],['thu','木'],['fri','金'],['sat','土'],['sun','日']].map(([k,label])=> (
+                    <label key={k} className="weekday-checkbox-label">
+                      <input 
+                        type="radio" 
+                        name="weekday"
+                        value={k}
+                        checked={selectedWeekday === k}
+                        onChange={() => setSelectedWeekday(k as any)}
+                      />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              {/* 他のフィルター項目もここに追加可能 */}
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-primary" onClick={() => setIsModalOpen(false)}>条件を適用</button>
+            </div>
           </div>
         </div>
-      </section>
+      )}
 
       {/* フッター */}
       <footer className="footer">
