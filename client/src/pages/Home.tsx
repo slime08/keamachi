@@ -1,10 +1,11 @@
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BrowseFacilities from './Browse'
 import { SERVICE_OPTIONS } from '../constants/services'; // SERVICE_OPTIONS をインポート
 import lpImage from "../assets/lp.png";
+import { useAuth } from '../contexts/AuthProvider'; // useAuthをインポート
 
 interface Facility {
   id: number
@@ -27,6 +28,14 @@ interface Facility {
 }
 
 export default function Home() {
+  const { user, logout, isAuthenticated } = useAuth(); // useAuthからuser, logout, isAuthenticatedを取得
+  const navigate = useNavigate(); // logout後にリダイレクトするために追加
+
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true }); // ログアウト後にトップページへ
+  };
+
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedService, setSelectedService] = useState('all')
   const [selectedLocation, setSelectedLocation] = useState('all')
@@ -44,8 +53,15 @@ export default function Home() {
           <div className="nav-links">
             <a href="#features">特徴</a>
             <a href="#services">サービス</a>
-            <a href="#contact">お問い合わせ</a>
-            <Link to="/login" className="nav-login">ログイン</Link>
+            <Link to="/contact">お問い合わせ</Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/mypage" className="nav-login">マイページ</Link>
+                <button onClick={handleLogout} className="nav-login nav-logout-button">ログアウト</button>
+              </>
+            ) : (
+              <Link to="/login" className="nav-login">ログイン</Link>
+            )}
           </div>
         </div>
       </nav>
@@ -72,7 +88,8 @@ export default function Home() {
       </section>
 
       {/* Search card overlapping hero */}
-      <div className="container search-card">
+      <p className="search-card-pre-text">条件を選んで、あなたに合う事業所を探しましょう</p>
+      <div className="container search-card home-search-card">
         <div className="search-row">
           <input type="text" placeholder="事業所名・住所で検索" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} style={{flex:1}} />
           <select value={selectedService} onChange={e=>setSelectedService(e.target.value)}>
@@ -81,12 +98,25 @@ export default function Home() {
               <option key={service.key} value={service.label}>{service.label}</option>
             ))}
           </select>
-          <button className="btn btn-primary">検索</button>
+          <button className="btn btn-primary home-search-button">検索</button>
         </div>
         <div className="weekday-toggle weekday-filter">
-          {[['all','すべて'],['mon','月'],['tue','火'],['wed','水'],['thu','木'],['fri','金'],['sat','土'],['sun','日']].map(([k,label])=> (
-            <button key={k} onClick={()=>setSelectedWeekday(k as any)} className={selectedWeekday===k ? 'btn btn-primary' : 'btn btn-ghost'}>{label}</button>
-          ))}
+          {[['all','すべて'],['mon','月'],['tue','火'],['wed','水'],['thu','木'],['fri','金'],['sat','土'],['sun','日']].map(([k,label])=> {
+            const isSelected = selectedWeekday === k;
+            const isDimmed = selectedWeekday === 'all' && k !== 'all';
+            let buttonClass = 'btn ';
+            if (isSelected) {
+              buttonClass += 'btn-primary';
+            } else {
+              buttonClass += 'btn-ghost';
+            }
+            if (isDimmed) {
+              buttonClass += ' dimmed';
+            }
+            return (
+              <button key={k} onClick={()=>setSelectedWeekday(k as any)} className={buttonClass}>{label}</button>
+            )
+          })}
         </div>
       </div>
       

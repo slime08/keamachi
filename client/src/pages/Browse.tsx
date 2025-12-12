@@ -353,6 +353,12 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
 
         {/* 検索結果数 */}
         <div className="results-info">
+          <div className="availability-legend">
+            <span>凡例:</span>
+            <span className="badge-legend open">○</span> 空きあり
+            <span className="badge-legend limited">△</span>残りわずか
+            <span className="badge-legend closed">×</span> 空きなし
+          </div>
           <p>{filteredFacilities.length}件の事業所が見つかりました</p>
         </div>
 
@@ -368,45 +374,45 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
             {filteredFacilities.map(f => (
               <div key={f.id} className="card facility-card" onClick={() => setSelectedFacility(f.id)}>
                 <div className="facility-card-image-wrapper">
-                  <img
-                    src={f.imageUrl || '/no-image.svg'}
-                    alt={f.name}
-                    className="facility-card-image"
-                    onError={(e) => {
-                      const imgElement = e.target as HTMLImageElement;
-                      if (imgElement.src.endsWith('/no-image.svg')) {
-                        return; // Already showing no-image, prevent infinite loop
-                      }
-                      imgElement.onerror = null; // Prevent subsequent errors
-                      imgElement.src = '/no-image.svg'; // Fallback to a no-image SVG
-                    }}
-                  />
+                  {f.imageUrl ? (
+                    <img
+                      src={f.imageUrl}
+                      alt={f.name}
+                      className="facility-card-image"
+                      onError={(e) => {
+                        const imgElement = e.target as HTMLImageElement;
+                        imgElement.onerror = null; 
+                        imgElement.style.display = 'none'; // Hide broken image
+                      }}
+                    />
+                  ) : (
+                    <div className="no-image-placeholder">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                      <span>NO IMAGE</span>
+                    </div>
+                  )}
                 </div>
                 <div className="card-body">
-                  <h3>{f.name}</h3>
-                  <p className="muted">{f.location} - {f.serviceType}</p>
-                  <p className="desc">{f.description || 'N/A'}</p>
+                  <h3 className="facility-name">{f.name}</h3>
+                  <p className="facility-meta-info">{f.serviceType} / {f.location}</p>
+                  
+                  <div className="facility-tags">
+                    <span className="tag-badge">{f.serviceType}</span>
+                    {/* Facility strength tags can be added here if available in data */}
+                  </div>
 
-                  <div style={{marginTop:8}}>
+                  <div className="facility-availability">
                     <AvailabilityBadges availability={f.availability} />
                   </div>
 
-                  <div className="meta" style={{marginTop:10}}>
-                    <span className="rating">⭐{f.rating}</span>
-                    <span className="reviews">({f.reviews})</span>
+                  <div className="facility-rating">
+                    <span className="rating-stars">⭐ {f.rating || 'N/A'}</span>
+                    <span className="rating-reviews">({f.reviews || 0}件)</span>
                   </div>
-                  <div className="actions">
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectedFacility(f.id)
-                      }}
-                    >
-                      詳細を見る
-                    </button>
-                  </div>
+
+                  <p className="facility-description facility-description-clamp">{f.description || '事業所の説明がありません。'}</p>
+                  
+                  <span className="details-link">詳細を見る</span>
                 </div>
               </div>
             ))}

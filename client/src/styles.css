@@ -29,7 +29,7 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden; /* è®“ï½ªè­ï½¹èœ·ä»£ãƒ»ç¹§ï½¹ç¹§ï½¯ç¹ï½­ç¹ï½¼ç¹ï½«ç¹§å¸åœ‹ç¸ºãƒ»*/
+  overflow-x: hidden; /* æ¨ªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚’ç¦æ­¢ */
 }
 
 .app { min-height: 100vh; max-width: 100%; }
@@ -86,7 +86,7 @@ body {
   display: flex;
   gap: 10px;
   align-items: center;
-  flex-wrap: wrap; /* è­Œï½¢èŸ„ãƒ»- ç¹ãƒ»ã›ç¹§ï½¯ç¹åŒ»ãƒ£ç¹åŠ±ã€’ç¸ºï½¯è¬šå€¥ï½Šéœ‘æ–â˜† */
+  flex-wrap: wrap; /* æŠ˜ã‚Šè¿”ã— - çœã‚¹ãƒšãƒ¼ã‚¹ã§ã¯æŠ˜ã‚Šè¿”ã™ */
 }
 
 .nav-links a,
@@ -899,4 +899,189 @@ footer,
 
 @media (max-width: 980px) {
   .weekday-badge { width:26px; height:26px; font-size:11px }
+}
+
+/* Phase 1: Home.tsx UI Improvements */
+
+/* ŒŸõƒJ[ƒhã‚Ì•â‘«•¶ */
+.search-card-pre-text {
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ŒŸõƒJ[ƒh‚ğå–ğ‚É‚·‚é */
+.home-search-card {
+  margin-top: -60px; /* —]”’‚ğ‘‚â‚· */
+  padding: 24px; /* “à‘¤‚Ì—]”’‚ğ‘‚â‚· */
+  background: rgba(255, 255, 255, 0.96); /* ”wŒi‚ğ­‚µ”Z‚­ */
+  border: 1px solid rgba(8, 166, 111, 0.2); /* ‹«ŠEü‚ğ­‚µ”Z‚­ */
+  box-shadow: 0 24px 60px rgba(15, 70, 50, 0.15); /* ‰e‚ğ‹­‚ß‚é */
+  border-radius: 24px; /* Šp‚ğŠÛ‚­ */
+}
+
+/* —j“úƒ{ƒ^ƒ“‚ÌON/OFF‚ğ–¾Šm‰» */
+.weekday-toggle .btn.btn-primary {
+  box-shadow: 0 8px 16px rgba(8, 166, 111, 0.2); /* ON‚Ìó‘Ô‚É‰e‚ğ’Ç‰Á */
+  transform: translateY(-2px);
+}
+
+.weekday-toggle .btn.btn-ghost {
+  background: rgba(8, 166, 111, 0.05); /* OFF‚Ìó‘Ô‚ğ­‚µ“§‰ß */
+  color: var(--text-muted);
+}
+
+.weekday-toggle .btn.btn-ghost.dimmed {
+  opacity: 0.5; /* u‚·‚×‚Äv‘I‘ğ’†‚É‘¼‚Ì—j“ú‚ğã‚ß‚é */
+  background: transparent;
+}
+
+/* ŒŸõƒ{ƒ^ƒ“‚ğ‹­’² */
+.home-search-button {
+  padding: 14px 24px; /* ƒTƒCƒY‚ğ‘å‚«‚­ */
+  font-weight: 900; /* ‘¾š‚É‚·‚é */
+  font-size: 16px;
+  box-shadow: 0 16px 32px rgba(8, 166, 111, 0.22); /* ‰e‚ğ‹­‚ß‚é */
+  transform: scale(1.02); /* ­‚µ‚¾‚¯‘å‚«‚­ */
+}
+
+/* Phase 2: Browse.tsx UI Improvements */
+
+/* ‹ó‚«ó‹µ‚Ì–}—á */
+.availability-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.availability-legend .badge-legend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 700;
+  margin-right: -4px;
+}
+.availability-legend .badge-legend.open { background-color: var(--primary); }
+.availability-legend .badge-legend.limited { background-color: #f97316; }
+.availability-legend .badge-legend.closed { background-color: #ccc; color: #666; }
+
+/* –‹ÆŠƒJ[ƒh“à‚ÌƒŒƒCƒAƒEƒg’²® */
+.facility-card .card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* ƒRƒ“ƒeƒ“ƒcŠÔ‚ÌƒMƒƒƒbƒv‚ğ“ˆê */
+  padding: 4px; /* ƒJ[ƒhƒ{ƒfƒB‚ÌƒpƒfƒBƒ“ƒO‚ğ”÷’²® */
+}
+
+/* NO IMAGE ƒvƒŒ[ƒXƒzƒ‹ƒ_[ */
+.no-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: var(--bg-1);
+  border-radius: 12px;
+  color: var(--text-muted);
+}
+.no-image-placeholder svg {
+  stroke: var(--muted);
+  opacity: 0.5;
+}
+.no-image-placeholder span {
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ƒJ[ƒh“àî•ñ‚Ì‡˜‚ÆƒXƒ^ƒCƒ‹ */
+.facility-name {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.2;
+}
+.facility-meta-info {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: -4px 0 0;
+}
+.facility-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tag-badge {
+  background: var(--glass);
+  color: var(--primary-600);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.facility-availability {
+  margin-top: 4px;
+}
+.facility-rating {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.rating-reviews {
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+/* à–¾•¶‚ğ2s‚É§ŒÀ */
+.facility-description-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  height: calc(14px * 1.6 * 2); /* 2s•ª‚Ì‚‚³‚ğŠm•Û */
+  margin: 0;
+}
+
+/* uÚ×‚ğŒ©‚évƒŠƒ“ƒN */
+.details-link {
+  margin-top: auto; /* ƒJ[ƒh‚ÌÅ‰º•”‚É”z’u */
+  padding-top: 8px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* Phase 3: Compact Sections */
+
+/* u“Á’¥vƒZƒNƒVƒ‡ƒ“‚ÌƒRƒ“ƒpƒNƒg‰» */
+.features {
+  padding: 24px 0 0; /* ã‰º‚Ì—]”’‚ğŒ¸‚ç‚· */
+}
+.feature-card {
+  gap: 4px; /* ƒJ[ƒh“à‚ÌƒMƒƒƒbƒv‚ğŒ¸‚ç‚· */
+  padding: 16px;
+}
+.feature-card p {
+  line-height: 1.5; /* sŠÔ‚ğ‹l‚ß‚é */
+}
+
+/* u’ñ‹ŸƒT[ƒrƒXvƒZƒNƒVƒ‡ƒ“‚ÌƒRƒ“ƒpƒNƒg‰» */
+.services {
+  padding: 16px 0; /* ã‰º‚Ì—]”’‚ğŒ¸‚ç‚· */
+}
+.service-item {
+  padding: 14px; /* ƒJ[ƒh“à‚Ì—]”’‚ğŒ¸‚ç‚· */
 }

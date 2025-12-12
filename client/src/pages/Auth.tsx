@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import api from '../api'
 import { safeSetJSON } from '../utils/storage'
+import { useAuth } from '../contexts/AuthProvider' // useAuthをインポート
 
 interface LoginFormData {
   email: string
@@ -40,6 +41,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
           facility_description: ''
         }
   )
+  const { login } = useAuth(); // useAuthからloginメソッドを取得
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -78,30 +80,36 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
         }
       }
 
-      const endpoint = isLogin ? '/auth/login' : '/auth/register'
-      const response = await api.post(endpoint, formData, {
-        timeout: 5000
-      }).catch(err => {
-        if (err.code === 'ECONNABORTED' || !err.response) {
-          console.warn('Backend not responding, using mock data');
-          return {
-            data: {
-              token: 'mock-token-' + Math.random().toString(36).substr(2, 9),
-              user: {
-                id: Math.floor(Math.random() * 1000),
-                name: (formData as any).name || 'テストユーザー',
-                email: (formData as any).email,
-                role: (formData as any).role || 'user'
+      if (isLogin) {
+        // ダミーlogin関数を呼び出す
+        await login((formData as LoginFormData).email, (formData as LoginFormData).password);
+      } else {
+        // 登録の場合は既存のAPIコールを使用
+        const endpoint = '/auth/register'
+        const response = await api.post(endpoint, formData, {
+          timeout: 5000
+        }).catch(err => {
+          if (err.code === 'ECONNABORTED' || !err.response) {
+            console.warn('Backend not responding, using mock data');
+            return {
+              data: {
+                token: 'mock-token-' + Math.random().toString(36).substr(2, 9),
+                user: {
+                  id: Math.floor(Math.random() * 1000),
+                  name: (formData as any).name || 'テストユーザー',
+                  email: (formData as any).email,
+                  role: (formData as any).role || 'user'
+                }
               }
             }
           }
-        }
-        throw err
-      })
-      
-      // トークンをローカルストレージに保存
-      localStorage.setItem('token', response.data.token)
-      safeSetJSON('user', response.data.user)
+          throw err
+        })
+        
+        // トークンをローカルストレージに保存
+        localStorage.setItem('token', response.data.token)
+        safeSetJSON('user', response.data.user)
+      }
 
       // 事業所登録の場合、事業所APIにも追加登録
       if (!isLogin && (formData as RegisterFormData).role === 'facility') {
@@ -115,7 +123,7 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
             services: servicesArray,
             // description など残りのフィールドも必要に応じて追加
           }, {
-            headers: { Authorization: `Bearer ${response.data.token}` } // 認証トークンを使用
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } // 認証トークンを使用
           });
           console.log('Facility details registered successfully.');
         } catch (facilityErr) {
@@ -125,10 +133,10 @@ export default function Auth({ mode }: { mode: 'login' | 'register' }) {
       }
       
       // ダッシュボードへリダイレクト
-      navigate('/dashboard', { replace: true })
+      navigate('/', { replace: true }) // ログイン成功後は必ずトップページ / にリダイレクト
     } catch (err: any) {
       console.error('Auth error:', err)
-      setError(err.response?.data?.error || 'エラーが発生しました。しばらくしてから再度お試しください。')
+      setError(err.message || 'エラーが発生しました。しばらくしてから再度お試しください。')
     } finally {
       setLoading(false)
     }

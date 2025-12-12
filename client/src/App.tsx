@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom' // Removed BrowserRou
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
+import MyPage from './pages/MyPage' // MyPageをインポート
 import { useAuth } from './hooks/useAuth' // Re-import useAuth
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/login" element={<Auth mode="login" />} />
         <Route path="/register" element={<Auth mode="register" />} />
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        <Route path="/mypage" element={<ProtectedRoute element={<MyPage />} />} /> {/* マイページルートを追加 */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
