@@ -57,24 +57,24 @@ const getDbConfig = () => {
 const runMigrations = async () => {
   const client = await pool.connect();
   try {
-    // 1. 繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ邂｡逅・ユ繝ｼ繝悶Ν繧剃ｽ懈・
+    // 1. マイグレーション履歴テーブルを作成
     await client.query(`
       CREATE TABLE IF NOT EXISTS schema_migrations (
         version VARCHAR(255) PRIMARY KEY
       );
     `);
 
-    // 2. 螳溯｡梧ｸ医∩縺ｮ繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繧貞叙蠕・
+    // 2. 実行済みのマイグレーションを取得
     const executedMigrationsResult = await client.query('SELECT version FROM schema_migrations');
     const executedVersions = executedMigrationsResult.rows.map(r => r.version);
     console.log('Already executed versions:', executedVersions);
 
-    // 3. 繝・ぅ繝ｬ繧ｯ繝医Μ縺九ｉ繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繝輔ぃ繧､繝ｫ繧貞叙蠕・
+    // 3. ディレクトリからマイグレーションファイルを取得 
     const migrationFiles = (await fsPromises.readdir(__dirname))
       .filter(file => file.endsWith('.sql'))
       .sort(); // 繝輔ぃ繧､繝ｫ蜷阪〒繧ｽ繝ｼ繝医＠縺ｦ螳溯｡碁・ｒ菫晁ｨｼ
 
-    // 4. 譛ｪ螳溯｡後・繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繧貞ｮ溯｡・
+    // 4. 未実行のマイグレーションを実行 
     for (const file of migrationFiles) {
       if (!executedVersions.includes(file)) {
         console.log(`Running migration: ${file}`);
@@ -82,7 +82,7 @@ const runMigrations = async () => {
         const filePath = path.join(__dirname, file);
         const sql = await fsPromises.readFile(filePath, 'utf-8');
 
-        // 繝医Λ繝ｳ繧ｶ繧ｯ繧ｷ繝ｧ繝ｳ蜀・〒螳溯｡・
+        // トランザクション内で実行 
         try {
           await client.query('BEGIN');
           await client.query(sql);
@@ -92,7 +92,7 @@ const runMigrations = async () => {
         } catch (err) {
           await client.query('ROLLBACK');
           console.error(`Failed to migrate ${file}. Rolled back.`, err);
-          throw err; // 繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺溘ｉ莉･髯阪・繝槭う繧ｰ繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ繧剃ｸｭ豁｢
+          throw err; // エラーが発生したらロールバック 
         }
       }
     }

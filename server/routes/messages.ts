@@ -4,7 +4,7 @@ import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// 繝｡繝・そ繝ｼ繧ｸ荳隕ｧ蜿門ｾ・
+// メッセージ履歴取得
 router.get('/conversation/:conversationId', authenticate, async (req, res) => {
   try {
     const { conversationId } = req.params;
@@ -19,7 +19,7 @@ router.get('/conversation/:conversationId', authenticate, async (req, res) => {
   }
 });
 
-// 繝｡繝・そ繝ｼ繧ｸ騾∽ｿ｡
+// メッセージ送信
 router.post('/', authenticate, async (req, res) => {
   try {
     const { conversation_id, content } = req.body;

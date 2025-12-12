@@ -5,21 +5,21 @@ import { query } from '../db.js';
 
 const router = express.Router();
 
-// 繝ｦ繝ｼ繧ｶ繝ｼ逋ｻ骭ｲ
+// ユーザー登録
 router.post('/register', async (req, res) => {
   try {
     const { email, password, name, role, facility_name } = req.body;
 
-    // 繝｡繝ｼ繝ｫ驥崎､・メ繧ｧ繝・け
+    // メールアドレス重複チェック
     const existing = await query('SELECT * FROM users WHERE email = $1', [email]);
     if (existing.rows.length > 0) {
       return res.status(409).json({ error: 'Email already exists' });
     }
 
-    // 繝代せ繝ｯ繝ｼ繝峨ワ繝・す繝･
+    // パスワードハッシュ化
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 繝ｦ繝ｼ繧ｶ繝ｼ菴懈・
+    // ユーザー作成
     const result = await query(
       'INSERT INTO users (email, password, name, role, facility_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, name, role',
       [email, hashedPassword, name, role, facility_name]
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// 繝ｭ繧ｰ繧､繝ｳ
+// ログイン
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;

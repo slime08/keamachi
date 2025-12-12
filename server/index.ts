@@ -28,7 +28,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(cors());
+console.log('CORS_ORIGIN:', process.env.CLIENT_URL || 'http://localhost:5174'); // Added log
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5174', // フロントエンドのオリジンを明示的に許可
+  credentials: true // クッキーなどの認証情報を許可する場合
+}));
 app.use(express.json());
 
 // API Routes
@@ -51,7 +55,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
-// WebSocket險ｭ螳・
+// WebSocket 処理
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
@@ -70,7 +74,7 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`笨・Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
 export default app;

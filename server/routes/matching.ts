@@ -4,7 +4,7 @@ import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// 繝槭ャ繝√Φ繧ｰ謠先｡医ｒ蜿門ｾ・
+// マッチング提案を取得
 router.get('/suggestions', authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -19,7 +19,7 @@ router.get('/suggestions', authenticate, async (req, res) => {
   }
 });
 
-// 繝槭ャ繝√Φ繧ｰ繧剃ｽ懈・
+// マッチングを作成
 router.post('/', authenticate, async (req, res) => {
   try {
     const { facility_id, user_id } = req.body;
@@ -34,7 +34,7 @@ router.post('/', authenticate, async (req, res) => {
   }
 });
 
-// 繝槭ャ繝√Φ繧ｰ繧呈価隱・
+// マッチングを承認
 router.put('/:id/accept', authenticate, async (req, res) => {
   try {
     const { id } = req.params;

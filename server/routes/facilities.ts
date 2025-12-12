@@ -13,11 +13,11 @@ const formatFacility = (facility: any) => {
   const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   
   days.forEach(day => {
-    // DB縺ｮ 'mon_availability' 縺ｪ縺ｩ繧・'mon' 縺ｫ繝槭ャ繝斐Φ繧ｰ
+    // DBの 'mon_availability' なども 'mon' にマッピング
     const dbKey = `${day}_availability`; 
     const dbValue = facility[dbKey];
 
-    // DB縺ｮ蛟､縺九ｉ繝輔Ο繝ｳ繝医お繝ｳ繝峨・譛溷ｾ・☆繧句､縺ｸ螟画鋤
+    // DBの値からフロントエンドの表示に適した値に変換 
     switch (dbValue) {
       case 'open':
       case 'circle':
@@ -32,17 +32,16 @@ const formatFacility = (facility: any) => {
         availability[day] = 'closed';
         break;
       default:
-        // 譁ｰ縺励＞繝・・繧ｿ縺ｯ 'open', 'limited', 'closed' 縺ｧ蜈･繧九％縺ｨ繧呈Φ螳・
-        // 蜿､縺・ョ繝ｼ繧ｿ繧・ｺ域悄縺帙〓蛟､縺ｯ 'closed' 縺ｫ繝輔か繝ｼ繝ｫ繝舌ャ繧ｯ
+        // 期待する値は 'open', 'limited', 'closed' のいずれか 
+    // 不明な値は 'closed' にフォールバック 
         availability[day] = dbValue && ['open', 'limited', 'closed'].includes(dbValue) ? dbValue : 'closed';
     }
     
-    // 蜈・・蜀鈴聞縺ｪ繧ｭ繝ｼ縺ｯ蜑企勁
+    // 不要なフィールドは削除 
     delete facility[dbKey];
   });
 
-  // DB縺ｮ繧ｫ繝ｩ繝蜷阪ｒ繝輔Ο繝ｳ繝医お繝ｳ繝峨・繧ｭ繝｣繝｡繝ｫ繧ｱ繝ｼ繧ｹ縺ｫ蜷医ｏ縺帙ｋ
-  return {
+      // DBのフィールド名をフロントエンドのキャメルケースに変換   return {
     id: facility.id,
     userId: facility.user_id,
     name: facility.name,
@@ -65,10 +64,10 @@ const formatFacility = (facility: any) => {
   };
 };
 
-// 莠区･ｭ謇荳隕ｧ蜿門ｾ・
+// 事業所一覧取得
 router.get('/', async (req, res) => {
   try {
-    // 蜈ｨ繧ｫ繝ｩ繝繧貞叙蠕励☆繧九ｈ縺・↓繧ｯ繧ｨ繝ｪ繧剃ｿｮ豁｣
+    // 全てのフィールドを取得
     const result = await query('SELECT * FROM facilities ORDER BY created_at DESC');
     
     const facilities = result.rows.map(formatFacility);
@@ -80,11 +79,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 莠区･ｭ謇隧ｳ邏ｰ蜿門ｾ・
+// 事業所詳細取得
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    // 蜈ｨ繧ｫ繝ｩ繝繧貞叙蠕励☆繧九ｈ縺・↓繧ｯ繧ｨ繝ｪ繧剃ｿｮ豁｣
+    // 全てのフィールドを取得
     const result = await query('SELECT * FROM facilities WHERE id = $1', [id]);
     
     if (result.rows.length === 0) {
@@ -100,10 +99,10 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// 莠区･ｭ謇菴懈・ (縺薙・驛ｨ蛻・・螟画峩荳崎ｦ√□縺後∝ｿｵ縺ｮ縺溘ａ險倩ｼ・
+// 事業所作成 (このエンドポイントは本来認証が必要だが、とりあえず仮の実装)
 router.post('/', authenticate, async (req, res) => {
   try {
-    // 譛ｬ譚･縺ｯ繧ゅ▲縺ｨ螟壹￥縺ｮ繧ｫ繝ｩ繝繧貞女縺台ｻ倥￠繧九∋縺阪□縺後∫ｰ｡逡･蛹悶・縺溘ａ迴ｾ迥ｶ邯ｭ謖・
+    // 実際にはもっと多くのフィールドを受け取るはずだが、今回は最小限の実装
     const { name, description, location, service_type } = req.body;
     const userId = req.user.id;
 

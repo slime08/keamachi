@@ -17,7 +17,7 @@ function App() {
         const response = await api.get('/health').catch(() => null)
         
         if (!response || response.status !== 200) {
-          console.warn('笞・・Backend server may not be running. Using mock data.')
+          console.warn('警告：Backend server may not be running. Using mock data.')
         }
       } catch (error) {
         console.warn('Backend connection check failed:', error)

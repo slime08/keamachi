@@ -62,7 +62,7 @@ export default function Home() {
           </div>
           <div className="hero-illustration card">
             <img
-              src="/LP.png"
+              src="/lp.png"
               alt="ケアマチの利用イメージ"
               className="hero-image"
             />

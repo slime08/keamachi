@@ -4,7 +4,7 @@ import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// 繝ｦ繝ｼ繧ｶ繝ｼ繝励Ο繝輔ぅ繝ｼ繝ｫ蜿門ｾ・
+// ユーザープロフィール取得
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// 繝励Ο繝輔ぅ繝ｼ繝ｫ譖ｴ譁ｰ
+// プロフィール更新
 router.put('/:id', authenticate, async (req, res) => {
   try {
     const { id } = req.params;
