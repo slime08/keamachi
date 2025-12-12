@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BrowseFacilities from './Browse'
 import { SERVICE_OPTIONS } from '../constants/services'; // SERVICE_OPTIONS をインポート
+import lpImage from "../assets/lp.png";
 
 interface Facility {
   id: number
@@ -62,7 +63,7 @@ export default function Home() {
           </div>
           <div className="hero-illustration card">
             <img
-              src="/lp.png"
+              src={lpImage}
               alt="ケアマチの利用イメージ"
               className="hero-image"
             />
