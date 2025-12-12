@@ -5,6 +5,8 @@ import BrowseFacilities from './Browse'
 import { SERVICE_OPTIONS } from '../constants/services';
 import lpImage from "../assets/lp.png";
 import { useAuth } from '../contexts/AuthProvider';
+import { JAPANESE_PREFECTURES } from '../constants/prefectures'; // Import prefectures
+
 
 interface Facility {
   id: number
@@ -40,6 +42,8 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState('all')
   const [selectedWeekday, setSelectedWeekday] = useState<'all'|'mon'|'tue'|'wed'|'thu'|'fri'|'sat'|'sun'>('all')
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentCityQuery, setCurrentCityQuery] = useState(''); // New local state for city in modal
+
 
   // For the actual search to be triggered when the button is clicked,
   // we'll manage the search state that gets passed to BrowseFacilities.
@@ -53,6 +57,7 @@ export default function Home() {
     setCurrentSelectedService(selectedService);
     setCurrentSelectedLocation(selectedLocation);
     setCurrentSelectedWeekday(selectedWeekday);
+    setCurrentCityQuery(currentCityQuery); // Pass city query from modal
   };
 
   // Determine if any advanced filters are active (for button styling)
@@ -137,27 +142,23 @@ export default function Home() {
       <div className="container search-history-saved-search-placeholder">
         <div className="search-history-placeholder">
           <strong>検索履歴</strong>
-          <span className="muted"> (プレースホルダー: 検索履歴はここに表示されます)</span>
         </div>
         <div className="saved-search-placeholder">
           <strong>保存検索</strong>
-          <span className="muted"> (プレースホルダー: 保存された検索はここに表示されます)</span>
         </div>
       </div>
 
       {/* 事業所一覧の見出し */}
-      <h2 className="section-title container">事業所一覧</h2>
-      <p className="search-results-summary container muted">(現在 XX 件表示中)</p>
       <section className="container featured-section" style={{paddingTop:24}}>
         {/* 事業所ごとのDBから取得した一覧 */}
-        <BrowseFacilities 
-          initialSearch={currentSearchQuery} 
-          initialService={currentSelectedService} 
-          initialLocation={currentSelectedLocation} 
-          initialWeekday={currentSelectedWeekday} 
-          showControls={false} 
-        />
-      </section>
+                <BrowseFacilities
+                  initialSearch={currentSearchQuery}
+                  initialService={currentSelectedService}
+                  initialLocation={currentSelectedLocation}
+                  initialWeekday={currentSelectedWeekday}
+                  initialCityQuery={currentCityQuery} // New prop
+                  showControls={false}
+                />      </section>
 
       {/* 特徴セクション */}
       <section id="features" className="features">
@@ -281,20 +282,28 @@ export default function Home() {
               </fieldset>
               <fieldset className="filter-group">
                 <legend>地域</legend>
-                <select 
-                  value={selectedLocation} 
+                <select
+                  value={selectedLocation}
                   onChange={e => setSelectedLocation(e.target.value)}
                   className="modal-select-location"
                 >
                   <option value="all">すべての地域</option>
-                  {/* ロケーションのオプションをここにマップ */}
-                  {/* 現在、locationはBrowseFacilitiesの内部状態なので、仮のオプション */}
-                  <option value="東京都">東京都</option>
-                  <option value="神奈川県">神奈川県</option>
-                  <option value="大阪府">大阪府</option>
+                  {JAPANESE_PREFECTURES.map(pref => ( // Use JAPANESE_PREFECTURES
+                    <option key={pref} value={pref}>{pref}</option>
+                  ))}
                 </select>
               </fieldset>
-              {/* 他のフィルター項目もここに追加可能 */}
+              <fieldset className="filter-group"> {/* New fieldset for city */}
+                <legend>市区町村</legend>
+                <input
+                  type="text"
+                  placeholder="例: 世田谷区"
+                  value={currentCityQuery}
+                  onChange={e => setCurrentCityQuery(e.target.value)}
+                  className="modal-city-input"
+                  disabled={selectedLocation === 'all'} // Disable if no prefecture selected
+                />
+              </fieldset>
             </div>
             <div className="modal-footer">
               <button className="btn btn-primary" onClick={() => {
