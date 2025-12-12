@@ -92,6 +92,10 @@ export default function Home() {
               <Link to="/register?role=user" className="btn btn-primary">利用者として登録</Link>
               <Link to="/register?role=facility" className="btn btn-secondary">事業所として登録</Link>
             </div>
+            <div className="registration-info">
+              <p><span>利用者登録は無料です。</span></p>
+              <p><span>事業所登録は、3ヶ月無料で、その翌月から500円/月、広告を消す設定にする場合は2000円/月です。</span></p>
+            </div>
           </div>
           <div className="hero-illustration card">
             <img
@@ -104,8 +108,9 @@ export default function Home() {
       </section>
 
       {/* キーワード検索、種別選択、検索ボタン */}
+      <h2 className="search-section-title container">事業所を探す</h2>
+      <p className="search-section-description container">地域や条件から事業所を探せます</p>
       <div className="container main-search-controls">
-        <p className="search-description-text">地域や条件から事業所を探せます</p>
         <div className="search-row">
           <input type="text" placeholder="事業所名・キーワードで検索" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} style={{flex:1}} />
           <select value={selectedService} onChange={e=>setSelectedService(e.target.value)}>
@@ -141,8 +146,9 @@ export default function Home() {
       </div>
 
       {/* 事業所一覧の見出し */}
+      <h2 className="section-title container">事業所一覧</h2>
+      <p className="search-results-summary container muted">(現在 XX 件表示中)</p>
       <section className="container featured-section" style={{paddingTop:24}}>
-        <h2>事業所一覧</h2>
         {/* 事業所ごとのDBから取得した一覧 */}
         <BrowseFacilities 
           initialSearch={currentSearchQuery} 
@@ -243,18 +249,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA セクション */}
-      <section className="cta">
-        <div className="container">
-          <h2>今すぐケアマチを始めましょう</h2>
-          <p>質の高い福祉サービスとのマッチングは、ケアマチで。</p>
-          <div className="cta-buttons">
-            <a href="/browse" className="btn btn-large btn-primary">事業所を探す</a>
-            <a href="/register" className="btn btn-large btn-secondary">新規登録</a>
           </div>
         </div>
       </section>

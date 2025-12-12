@@ -41,7 +41,8 @@ const formatFacility = (facility: any) => {
     delete facility[dbKey];
   });
 
-      // DBのフィールド名をフロントエンドのキャメルケースに変換   return {
+      // DBのフィールド名をフロントエンドのキャメルケースに変換
+  return {
     id: facility.id,
     userId: facility.user_id,
     name: facility.name,
