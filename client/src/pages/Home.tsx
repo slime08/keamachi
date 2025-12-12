@@ -1,11 +1,10 @@
-
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BrowseFacilities from './Browse'
-import { SERVICE_OPTIONS } from '../constants/services'; // SERVICE_OPTIONS をインポート
+import { SERVICE_OPTIONS } from '../constants/services';
 import lpImage from "../assets/lp.png";
-import { useAuth } from '../contexts/AuthProvider'; // useAuthをインポート
+import { useAuth } from '../contexts/AuthProvider';
 
 interface Facility {
   id: number
@@ -28,12 +27,12 @@ interface Facility {
 }
 
 export default function Home() {
-  const { user, logout, isAuthenticated } = useAuth(); // useAuthからuser, logout, isAuthenticatedを取得
-  const navigate = useNavigate(); // logout後にリダイレクトするために追加
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/', { replace: true }); // ログアウト後にトップページへ
+    navigate('/', { replace: true });
   };
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -42,8 +41,22 @@ export default function Home() {
   const [selectedWeekday, setSelectedWeekday] = useState<'all'|'mon'|'tue'|'wed'|'thu'|'fri'|'sat'|'sun'>('all')
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Determine if any advanced filters are active
-  const areFiltersActive = selectedWeekday !== 'all'; // Expand this logic for more filters
+  // For the actual search to be triggered when the button is clicked,
+  // we'll manage the search state that gets passed to BrowseFacilities.
+  const [currentSearchQuery, setCurrentSearchQuery] = useState('');
+  const [currentSelectedService, setCurrentSelectedService] = useState('all');
+  const [currentSelectedLocation, setCurrentSelectedLocation] = useState('all');
+  const [currentSelectedWeekday, setCurrentSelectedWeekday] = useState<'all'|'mon'|'tue'|'wed'|'thu'|'fri'|'sat'|'sun'>('all');
+
+  const handleSearch = () => {
+    setCurrentSearchQuery(searchQuery);
+    setCurrentSelectedService(selectedService);
+    setCurrentSelectedLocation(selectedLocation);
+    setCurrentSelectedWeekday(selectedWeekday);
+  };
+
+  // Determine if any advanced filters are active (for button styling)
+  const areAdvancedFiltersActive = selectedLocation !== 'all' || selectedWeekday !== 'all';
 
   return (
     <div className="home-page">
@@ -57,7 +70,6 @@ export default function Home() {
           <div className="nav-links">
             <a href="#features">特徴</a>
             <a href="#services">サービス</a>
-            <Link to="/contact">お問い合わせ</Link>
             {isAuthenticated ? (
               <>
                 <Link to="/mypage" className="nav-login">マイページ</Link>
@@ -70,173 +82,182 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Main Content - Search First */}
-      <main className="container search-first-view">
-        <header className="search-header">
-          <h1>事業所を探す</h1>
-          <p>地域や条件からあなたに合った事業所を探せます</p>
-        </header>
-
-        <div className="search-controls">
-          <div className="main-search-inputs">
-            <input type="text" placeholder="キーワードで検索" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-            <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
-              <option value="all">すべての種別</option>
-              {SERVICE_OPTIONS.map(service => (
-                <option key={service.key} value={service.label}>{service.label}</option>
-              ))}
-            </select>
+      {/* LPと登録が一番上 (ヒーローセクション) */}
+      <section className="hero">
+        <div className="container hero-inner">
+          <div className="hero-content">
+            <h1>福祉サービスと利用者を<br />つなぐモダンなマッチング</h1>
+            <p>質の高い福祉サービスを、必要な人へ。事業所と利用者の最適なマッチングを、シンプルで直感的な体験でサポートします。</p>
+            <div className="hero-buttons">
+              <Link to="/register?role=user" className="btn btn-primary">利用者として登録</Link>
+              <Link to="/register?role=facility" className="btn btn-secondary">事業所として登録</Link>
+            </div>
           </div>
-          <button 
-            className={`advanced-search-button ${areFiltersActive ? 'filter-active' : ''}`}
-            onClick={() => setIsModalOpen(true)}
-          >
-            詳細検索
-          </button>
+          <div className="hero-illustration card">
+            <img
+              src={lpImage}
+              alt="ケアマチの利用イメージ"
+              className="hero-image"
+            />
+          </div>
         </div>
-      </main>
+      </section>
 
-      {/* 事業所一覧 */}
+      {/* キーワード検索、種別選択、検索ボタン */}
+      <div className="container main-search-controls">
+        <p className="search-description-text">地域や条件から事業所を探せます</p>
+        <div className="search-row">
+          <input type="text" placeholder="事業所名・キーワードで検索" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} style={{flex:1}} />
+          <select value={selectedService} onChange={e=>setSelectedService(e.target.value)}>
+            <option value="all">すべての種別</option>
+            {SERVICE_OPTIONS.map(service => (
+              <option key={service.key} value={service.label}>{service.label}</option>
+            ))}
+          </select>
+          <button className="btn btn-primary main-search-button" onClick={handleSearch}>検索</button>
+        </div>
+      </div>
+
+      {/* 詳細検索ボタン */}
+      <div className="container advanced-search-toggle-area">
+        <button 
+          className={`advanced-search-button ${areAdvancedFiltersActive ? 'filter-active' : ''}`} 
+          onClick={() => setIsModalOpen(true)}
+        >
+          詳細検索
+        </button>
+      </div>
+
+      {/* 検索履歴、保存検索 (プレースホルダー) */}
+      <div className="container search-history-saved-search-placeholder">
+        <div className="search-history-placeholder">
+          <strong>検索履歴</strong>
+          <span className="muted"> (プレースホルダー: 検索履歴はここに表示されます)</span>
+        </div>
+        <div className="saved-search-placeholder">
+          <strong>保存検索</strong>
+          <span className="muted"> (プレースホルダー: 保存された検索はここに表示されます)</span>
+        </div>
+      </div>
+
+      {/* 事業所一覧の見出し */}
       <section className="container featured-section" style={{paddingTop:24}}>
         <h2>事業所一覧</h2>
+        {/* 事業所ごとのDBから取得した一覧 */}
         <BrowseFacilities 
-          initialSearch={searchQuery} 
-          initialService={selectedService} 
-          initialLocation={selectedLocation} 
-          initialWeekday={selectedWeekday} 
+          initialSearch={currentSearchQuery} 
+          initialService={currentSelectedService} 
+          initialLocation={currentSelectedLocation} 
+          initialWeekday={currentSelectedWeekday} 
           showControls={false} 
         />
       </section>
-      
-      {/* --- 以下、優先度を下げた既存コンテンツ --- */}
-      <div className="legacy-content">
-        {/* ヒーローセクション */}
-        <section className="hero">
-          <div className="container hero-inner">
-            <div className="hero-content">
-              <h1>福祉サービスと利用者を<br />つなぐモダンなマッチング</h1>
-              <p>質の高い福祉サービスを、必要な人へ。事業所と利用者の最適なマッチングを、シンプルで直感的な体験でサポートします。</p>
-              <div className="hero-buttons">
-                <Link to="/register?role=user" className="btn btn-primary">利用者として登録</Link>
-                <Link to="/register?role=facility" className="btn btn-secondary">事業所として登録</Link>
-              </div>
-            </div>
-            <div className="hero-illustration card">
-              <img
-                src={lpImage}
-                alt="ケアマチの利用イメージ"
-                className="hero-image"
-              />
-            </div>
-          </div>
-        </section>
 
-        {/* 特徴セクション */}
-        <section id="features" className="features">
-          <div className="container">
-            <h2>ケアマチの特徴</h2>
-            <div className="features-grid">
-              <div className="feature-card">
-                <div className="feature-icon">🔍</div>
-                <h3>簡単検索</h3>
-                <p>住所、サービス種別など、様々な条件から<br />
-                   あなたに合った事業所を簡単に検索できます。</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">⭐</div>
-                <h3>信頼できる評価</h3>
-                <p>実際の利用者による詳細なレビューで、<br />
-                   事業所の特徴が一目瞭然です。</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">💬</div>
-                <h3>直接やりとり</h3>
-                <p>アプリ内メッセージで事業所と<br />
-                   直接コミュニケーションできます。</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">✅</div>
-                <h3>安全で確実</h3>
-                <p>すべての情報は暗号化され、<br />
-                   個人情報の保護に万全を尽くしています。</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">🎯</div>
-                <h3>マッチング支援</h3>
-                <p>AIが最適な事業所を推奨し、<br />
-                   効率的なマッチングをサポートします。</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">📱</div>
-                <h3>24/7 利用可能</h3>
-                <p>いつでも、どこでも、スマートフォンから<br />
-                   事業所情報を確認できます。</p>
-              </div>
-            </div>
+      {/* 特徴セクション */}
+      <section id="features" className="features">
+        <div className="container">
+          <h2>ケアマチの特徴</h2>
+          <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">🔍</div>
+            <h3>簡単検索</h3>
+            <p>住所、サービス種別など、様々な条件から<br />
+               あなたに合った事業所を簡単に検索できます。</p>
           </div>
-        </section>
+          <div className="feature-card">
+            <div className="feature-icon">⭐</div>
+            <h3>信頼できる評価</h3>
+            <p>実際の利用者による詳細なレビューで、<br />
+               事業所の特徴が一目瞭然です。</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">💬</div>
+            <h3>直接やりとり</h3>
+            <p>アプリ内メッセージで事業所と<br />
+               直接コミュニケーションできます。</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">✅</div>
+            <h3>安全で確実</h3>
+            <p>すべての情報は暗号化され、<br />
+               個人情報の保護に万全を尽くしています。</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">🎯</div>
+            <h3>マッチング支援</h3>
+            <p>AIが最適な事業所を推奨し、<br />
+               効率的なマッチングをサポートします。</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">📱</div>
+            <h3>24/7 利用可能</h3>
+            <p>いつでも、どこでも、スマートフォンから<br />
+               事業所情報を確認できます。</p>
+          </div>
+          </div>
+        </div>
+      </section>
 
-        {/* サービス種別セクション */}
-        <section id="services" className="services">
-          <div className="container">
-            <h2>提供サービス</h2>
-            <div className="service-groups">
-              <div className="service-group">
-                <h4>訪問</h4>
-                <div className="services-grid">
-                  {SERVICE_OPTIONS.filter(s => ['home_care', 'home_nursing', 'home_rehab'].includes(s.key)).map(service => (
-                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
-                  ))}
-                </div>
+      {/* サービス種別セクション */}
+      <section id="services" className="services">
+        <div className="container">
+          <h2>提供サービス</h2>
+          <div className="service-groups">
+            <div className="service-group">
+              <h4>訪問</h4>
+              <div className="services-grid">
+                {SERVICE_OPTIONS.filter(s => ['home_care', 'home_nursing', 'home_rehab'].includes(s.key)).map(service => (
+                  <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                ))}
               </div>
-              <div className="service-group">
-                <h4>通所</h4>
-                <div className="services-grid">
-                  {SERVICE_OPTIONS.filter(s => ['day_service', 'day_rehab'].includes(s.key)).map(service => (
-                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
-                  ))}
-                </div>
+            </div>
+            <div className="service-group">
+              <h4>通所</h4>
+              <div className="services-grid">
+                {SERVICE_OPTIONS.filter(s => ['day_service', 'day_rehab'].includes(s.key)).map(service => (
+                  <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                ))}
               </div>
-              <div className="service-group">
-                <h4>入居・宿泊</h4>
-                <div className="services-grid">
-                  {SERVICE_OPTIONS.filter(s => ['short_stay', 'group_home', 'nursing_home', 'senior_housing'].includes(s.key)).map(service => (
-                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
-                  ))}
-                </div>
+            </div>
+            <div className="service-group">
+              <h4>入居・宿泊</h4>
+              <div className="services-grid">
+                {SERVICE_OPTIONS.filter(s => ['short_stay', 'group_home', 'nursing_home', 'senior_housing'].includes(s.key)).map(service => (
+                  <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                ))}
               </div>
-              <div className="service-group">
-                <h4>障害・児童</h4>
-                <div className="services-grid">
-                  {SERVICE_OPTIONS.filter(s => ['disability_daycare', 'after_school', 'child_development'].includes(s.key)).map(service => (
-                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
-                  ))}
-                </div>
+            </div>
+            <div className="service-group">
+              <h4>障害・児童</h4>
+              <div className="services-grid">
+                {SERVICE_OPTIONS.filter(s => ['disability_daycare', 'after_school', 'child_development'].includes(s.key)).map(service => (
+                  <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                ))}
               </div>
-              <div className="service-group">
-                <h4>就労・相談</h4>
-                <div className="services-grid">
-                  {SERVICE_OPTIONS.filter(s => ['employment_support_a', 'employment_support_b', 'consultation_support', 'care_manager'].includes(s.key)).map(service => (
-                    <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
-                  ))}
-                </div>
+            </div>
+            <div className="service-group">
+              <h4>就労・相談</h4>
+              <div className="services-grid">
+                {SERVICE_OPTIONS.filter(s => ['employment_support_a', 'employment_support_b', 'consultation_support', 'care_manager'].includes(s.key)).map(service => (
+                  <div key={service.key} className="service-item"><h3>{service.label}</h3></div>
+                ))}
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CTA セクション */}
-        <section className="cta">
-          <div className="container">
-            <h2>今すぐケアマチを始めましょう</h2>
-            <p>質の高い福祉サービスとのマッチングは、ケアマチで。</p>
-            <div className="cta-buttons">
-              <a href="/browse" className="btn btn-large btn-primary">事業所を探す</a>
-              <a href="/register" className="btn btn-large btn-secondary">新規登録</a>
-            </div>
+      {/* CTA セクション */}
+      <section className="cta">
+        <div className="container">
+          <h2>今すぐケアマチを始めましょう</h2>
+          <p>質の高い福祉サービスとのマッチングは、ケアマチで。</p>
+          <div className="cta-buttons">
+            <a href="/browse" className="btn btn-large btn-primary">事業所を探す</a>
+            <a href="/register" className="btn btn-large btn-secondary">新規登録</a>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       {/* 詳細検索モーダル */}
       {isModalOpen && (
@@ -264,10 +285,28 @@ export default function Home() {
                   ))}
                 </div>
               </fieldset>
+              <fieldset className="filter-group">
+                <legend>地域</legend>
+                <select 
+                  value={selectedLocation} 
+                  onChange={e => setSelectedLocation(e.target.value)}
+                  className="modal-select-location"
+                >
+                  <option value="all">すべての地域</option>
+                  {/* ロケーションのオプションをここにマップ */}
+                  {/* 現在、locationはBrowseFacilitiesの内部状態なので、仮のオプション */}
+                  <option value="東京都">東京都</option>
+                  <option value="神奈川県">神奈川県</option>
+                  <option value="大阪府">大阪府</option>
+                </select>
+              </fieldset>
               {/* 他のフィルター項目もここに追加可能 */}
             </div>
             <div className="modal-footer">
-              <button className="btn btn-primary" onClick={() => setIsModalOpen(false)}>条件を適用</button>
+              <button className="btn btn-primary" onClick={() => {
+                handleSearch(); // モーダルの条件も適用する
+                setIsModalOpen(false);
+              }}>条件を適用</button>
             </div>
           </div>
         </div>
