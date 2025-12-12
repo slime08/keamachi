@@ -166,22 +166,19 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
 
               {/* 画像セクション */}
               <div className="facility-image-section">
-                              {facility.imageUrl ? (
-                                <img
-                                  src={facility.imageUrl.replace('/keamachi/', '/')}
-                                  alt={facility.name}
-                                  className="facility-main-image"
-                                  onError={(e) => {
-                                        (e.target as HTMLImageElement).src = '/placeholder.png'; // Fallback to a placeholder
-                                        (e.target as HTMLImageElement).onerror = null; // Prevent infinite loop
-                                      }}
-                                />
-                              ) : (
-                                <div className="no-image-placeholder">
-                                  <span className="no-image-icon">🖼️</span>
-                                  <p>No Image</p>
-                                </div>
-                              )}                <button
+                                            <img
+                                              src={facility.imageUrl ? facility.imageUrl.replace('/keamachi/', '/') : '/placeholder.png'}
+                                              alt={facility.name}
+                                              className="facility-main-image"
+                                              onError={(e) => {
+                                                const imgElement = e.target as HTMLImageElement;
+                                                if (imgElement.src.endsWith('/placeholder.png')) {
+                                                  return; // Already showing placeholder, prevent infinite loop
+                                                }
+                                                imgElement.src = '/placeholder.png'; // Fallback to a placeholder
+                                                imgElement.onerror = null; // Prevent subsequent errors
+                                              }}
+                                            />                <button
                   className={`favorite-button ${isFavorite ? 'active' : ''}`}
                   onClick={() => toggleFavorite(facility.id)}
                   title={isFavorite ? 'お気に入りから削除' : 'お気に入りに追加'}
@@ -370,22 +367,19 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
             {filteredFacilities.map(f => (
               <div key={f.id} className="card facility-card" onClick={() => setSelectedFacility(f.id)}>
                 <div className="facility-card-image-wrapper">
-                  {f.imageUrl ? (
-                    <img
-                      src={f.imageUrl.replace('/keamachi/', '/')}
-                      alt={f.name}
-                      className="facility-card-image"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/placeholder.png'; // Fallback to a placeholder
-                        (e.target as HTMLImageElement).onerror = null; // Prevent infinite loop
-                      }}
-                    />
-                  ) : (
-                    <div className="no-image-placeholder-card">
-                      <span className="no-image-icon">🖼️</span>
-                      <p>No Image</p>
-                    </div>
-                  )}
+                  <img
+                    src={f.imageUrl ? f.imageUrl.replace('/keamachi/', '/') : '/placeholder.png'}
+                    alt={f.name}
+                    className="facility-card-image"
+                    onError={(e) => {
+                      const imgElement = e.target as HTMLImageElement;
+                      if (imgElement.src.endsWith('/placeholder.png')) {
+                        return; // Already showing placeholder, prevent infinite loop
+                      }
+                      imgElement.src = '/placeholder.png'; // Fallback to a placeholder
+                      imgElement.onerror = null; // Prevent subsequent errors
+                    }}
+                  />
                 </div>
                 <div className="card-body">
                   <h3>{f.name}</h3>
