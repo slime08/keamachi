@@ -1,3 +1,4 @@
+// Browse.tsx
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api'
@@ -167,16 +168,16 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
               {/* 画像セクション */}
               <div className="facility-image-section">
                                             <img
-                                              src={facility.imageUrl ? facility.imageUrl.replace('/keamachi/', '/') : '/placeholder.png'}
+                                              src={facility.imageUrl || '/no-image.svg'}
                                               alt={facility.name}
                                               className="facility-main-image"
                                               onError={(e) => {
                                                 const imgElement = e.target as HTMLImageElement;
-                                                if (imgElement.src.endsWith('/placeholder.png')) {
-                                                  return; // Already showing placeholder, prevent infinite loop
+                                                if (imgElement.src.endsWith('/no-image.svg')) {
+                                                  return; // Already showing no-image, prevent infinite loop
                                                 }
-                                                imgElement.src = '/placeholder.png'; // Fallback to a placeholder
                                                 imgElement.onerror = null; // Prevent subsequent errors
+                                                imgElement.src = '/no-image.svg'; // Fallback to a no-image SVG
                                               }}
                                             />                <button
                   className={`favorite-button ${isFavorite ? 'active' : ''}`}
@@ -368,16 +369,16 @@ export default function BrowseFacilities(props: BrowseProps = {}) {
               <div key={f.id} className="card facility-card" onClick={() => setSelectedFacility(f.id)}>
                 <div className="facility-card-image-wrapper">
                   <img
-                    src={f.imageUrl ? f.imageUrl.replace('/keamachi/', '/') : '/placeholder.png'}
+                    src={f.imageUrl || '/no-image.svg'}
                     alt={f.name}
                     className="facility-card-image"
                     onError={(e) => {
                       const imgElement = e.target as HTMLImageElement;
-                      if (imgElement.src.endsWith('/placeholder.png')) {
-                        return; // Already showing placeholder, prevent infinite loop
+                      if (imgElement.src.endsWith('/no-image.svg')) {
+                        return; // Already showing no-image, prevent infinite loop
                       }
-                      imgElement.src = '/placeholder.png'; // Fallback to a placeholder
                       imgElement.onerror = null; // Prevent subsequent errors
+                      imgElement.src = '/no-image.svg'; // Fallback to a no-image SVG
                     }}
                   />
                 </div>
