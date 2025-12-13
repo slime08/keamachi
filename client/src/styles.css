@@ -22,15 +22,27 @@
 
 html, body, #root { height: 100%; }
 
+html {
+  min-height: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--bg-1) 0%,
+    var(--bg-2) 100%
+  );
+}
+
 body {
   margin: 0;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  /* background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%); */
+  /* background: var(--bg-1);  単色に */
+  background: transparent; /* ←ここ重要 */
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden; /* 横スクロールを禁止 */
 }
+
 
 .app { min-height: 100vh; max-width: 100%; }
 
@@ -43,13 +55,40 @@ body {
 
 /* Top nav */
 .navbar {
-  position: sticky;
+  position: fixed;   /* ← ここを変更 */
   top: 0;
-  z-index: 10;
-  padding: 18px 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1000;
+
+  isolation: isolate;
+}
+
+/* 背景だけフル幅にする */
+.navbar::before {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  /* ここがキモ：親が中央寄せでも、背景だけ画面幅にする */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(15, 70, 50, 0.06);
+
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 既存の navbar の background/border は消す（重複防止） */
+.navbar {
+  background: transparent;
+  border-bottom: none;
 }
 
 .nav-container {
@@ -57,6 +96,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  padding: 6px 24px; /* 上下12px / 左右24px */
 }
 
 .nav-logo {
