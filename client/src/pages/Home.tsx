@@ -92,7 +92,7 @@ export default function Home() {
         <div className="container hero-inner">
           <div className="hero-content">
             <h1>福祉サービスと利用者を<br />つなぐモダンなマッチング</h1>
-            <p>質の高い福祉サービスを、必要な人へ。事業所と利用者の最適なマッチングを、シンプルで直感的な体験でサポートします。</p>
+            <p>質の高い福祉サービスを、必要な人へ。事業所と利用者の最適なマッチングを、ニーズに合わせてサポートします。</p>
             <div className="hero-buttons">
               <Link to="/register?role=user" className="btn btn-primary">利用者として登録</Link>
               <Link to="/register?role=facility" className="btn btn-secondary">事業所として登録</Link>
@@ -138,15 +138,7 @@ export default function Home() {
         </button>
       </div>
 
-      {/* 検索履歴、保存検索 (プレースホルダー) */}
-      <div className="container search-history-saved-search-placeholder">
-        <div className="search-history-placeholder">
-          <strong>検索履歴</strong>
-        </div>
-        <div className="saved-search-placeholder">
-          <strong>保存検索</strong>
-        </div>
-      </div>
+
 
       {/* 事業所一覧の見出し */}
       <section className="container featured-section" style={{paddingTop:24}}>

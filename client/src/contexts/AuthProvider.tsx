@@ -1,130 +1,106 @@
-// AuthProvider.tsx
-import { createContext, useContext, useEffect, useState } from 'react';
-import { Session, User } from '@supabase/supabase-js';
-import { supabase } from '../supabase';
+// client/src/contexts/AuthProvider.tsx
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import api from '../api'
+import { safeGetJSON, safeSetJSON } from '../utils/storage'
 
-type AuthContextType = {
-  session: Session | null; // SupabaseのSessionは使わないが型定義は残す
-  user: DummyUser | null;       // SupabaseのUserは使わないが型定義は残す
-  loading: boolean;
-  isAuthenticated: boolean; // ログイン状態かどうか
-  login: (email: string, password: string) => Promise<void>; // loginメソッドを追加
-  logout: () => void;      // signOutをlogoutにリネーム
-};
-
-// 開発用のダミーUser型
-interface DummyUser {
-  id: string;
-  email: string;
-  role: 'user' | 'facility';
-  name: string;
+export type AuthUser = {
+  id: number
+  email: string
+  name: string
+  role: string
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+type AuthContextType = {
+  user: AuthUser | null
+  token: string | null
+  loading: boolean
+  isAuthenticated: boolean
+  login: (email: string, password: string) => Promise<void>
+  logout: () => void
+}
+
+const TOKEN_KEY = 'token'
+const USER_KEY = 'user'
+
+const AuthContext = createContext<AuthContextType | null>(null)
+
+function setApiAuthToken(token: string | null) {
+  if (token) {
+    api.defaults.headers.common.Authorization = `Bearer ${token}`
+  } else {
+    delete api.defaults.headers.common.Authorization
+  }
+}
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // sessionとuserはsupabase依存しないダミーログイン用に修正
-  const [session, setSession] = useState<Session | null>(null); // ダミーログインでは使用しない
-  const [user, setUser] = useState<DummyUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [token, setToken] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  // isAuthenticatedを明示的に計算
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!user
 
+  // 起動時に localStorage から復元
   useEffect(() => {
-    // localStorageからログイン情報を復元
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem(TOKEN_KEY)
+    const storedUser = safeGetJSON<AuthUser | null>(USER_KEY, null)
 
-    if (storedUser && storedToken) {
-      try {
-        setUser(JSON.parse(storedUser));
-        // ダミーなのでSessionは再構築しない
-      } catch (e) {
-        console.error('Failed to parse user from localStorage', e);
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        setUser(null);
-      }
+    if (storedToken && storedUser) {
+      setToken(storedToken)
+      setUser(storedUser)
+      setApiAuthToken(storedToken)
+    } else {
+      // 片方だけ残ってるケースを掃除
+      localStorage.removeItem(TOKEN_KEY)
+      localStorage.removeItem(USER_KEY)
+      setApiAuthToken(null)
+      setToken(null)
+      setUser(null)
     }
-    setLoading(false);
 
-    // Supabaseの認証状態変化はダミーログインでは不要なのでコメントアウトまたは削除
-    // const { data: authListener } = supabase.auth.onAuthStateChange(
-    //   (_event, session) => {
-    //     setSession(session);
-    //     setUser(session?.user ?? null);
-    //     setLoading(false);
-    //   }
-    // );
-    // return () => {
-    //   authListener?.subscription.unsubscribe();
-    // };
-  }, []);
+    setLoading(false)
+  }, [])
 
   const login = async (email: string, password: string) => {
-    setLoading(true);
-    let role: 'user' | 'facility' | null = null;
-    let name: string = '';
+    setLoading(true)
+    try {
+      const res = await api.post('/auth/login', { email, password })
 
-    if (email === 'a@a' && password === 'a') {
-      role = 'user';
-      name = '利用者A';
-    } else if (email === 'b@b' && password === 'b') {
-      role = 'facility';
-      name = '事業所B';
-    } else {
-      setLoading(false);
-      throw new Error('Invalid email or password');
+      const nextToken: string = res.data.token
+      const nextUser: AuthUser = res.data.user
+
+      // 永続化
+      localStorage.setItem(TOKEN_KEY, nextToken)
+      safeSetJSON(USER_KEY, nextUser)
+
+      // 即時反映（ここがないと “200OKなのに未ログイン” になる）
+      setToken(nextToken)
+      setUser(nextUser)
+      setApiAuthToken(nextToken)
+    } finally {
+      setLoading(false)
     }
-
-    const dummyUser: DummyUser = { id: email, email, role, name };
-    const dummyToken = `dummy-token-${role}-${Math.random().toString(36).substring(2, 9)}`;
-
-    localStorage.setItem('user', JSON.stringify(dummyUser));
-    localStorage.setItem('token', dummyToken);
-    setUser(dummyUser);
-    setSession(null); // ダミーなのでSessionはnull
-
-    setLoading(false);
-  };
+  }
 
   const logout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    setUser(null);
-    setSession(null); // ダミーなのでSessionはnull
-  };
+    localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(USER_KEY)
+    setToken(null)
+    setUser(null)
+    setApiAuthToken(null)
+  }
 
-  const value = {
-    session,
-    user,
-    loading,
-    isAuthenticated, // isAuthenticatedを追加
-    login, // loginメソッドを追加
-    logout, // signOutをlogoutにリネーム
-  };
+  const value = useMemo(
+    () => ({ user, token, loading, isAuthenticated, login, logout }),
+    [user, token, loading, isAuthenticated]
+  )
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
 
 export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    console.error('useAuth was called outside of AuthProvider. Falling back to guest mode.');
-    // 「未ログイン扱い」で動く安全なデフォルト値を返す
-    return {
-      session: null,
-      user: null,
-      loading: false,
-      isAuthenticated: false, // ダミーなのでfalse
-      login: async () => { throw new Error('Auth not initialized'); }, // ダミーlogin
-      logout: () => { /* 何もしないダミー */ },
-    };
+  const ctx = useContext(AuthContext)
+  if (!ctx) {
+    throw new Error('useAuth must be used within <AuthProvider>')
   }
-  return context;
-};
+  return ctx
+}

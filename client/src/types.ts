@@ -14,6 +14,11 @@ export interface Facility {
   imageUrl?: string;
   services?: string[];
   capacity?: string;
+  operatingDays?: ('月' | '火' | '水' | '木' | '金' | '土' | '日')[]; // Added
+  shuttleService?: boolean; // Added
+  lunchProvided?: boolean; // Added
+  trialBookingAvailable?: boolean; // Added
+  pcWorkAvailable?: boolean; // Added
   staffCount?: string;
   operatingHours?: string;
   reviews?: number;

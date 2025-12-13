@@ -11,7 +11,7 @@ import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter for cl
 import { AuthProvider } from './contexts/AuthProvider'; // Import AuthProvider
 
 // Sanitize localStorage early to avoid JSON.parse('undefined') at runtime
-sanitizeLocalStorage(['token'])
+sanitizeLocalStorage(['token', 'user'])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

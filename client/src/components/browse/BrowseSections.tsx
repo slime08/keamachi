@@ -1,42 +1,64 @@
 // client/src/components/browse/BrowseSections.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facility } from '../../types'; // Assuming Facility type is in ../../types
-import AvailabilityBadges from '../AvailabilityBadges'; // Re-using existing component
+import type { Facility } from '../../types';
+import AvailabilityBadges from '../AvailabilityBadges';
 
-// Sub-component: BrowseHeaderSection
+// =========================
+// Shared: Image fallback
+// =========================
+const FALLBACK_SRC = '/no-image.svg';
+
+function resolveImageSrc(imageUrl?: string | null) {
+  if (typeof imageUrl !== 'string') return FALLBACK_SRC;
+  const trimmed = imageUrl.trim();
+  return trimmed.length > 0 ? trimmed : FALLBACK_SRC;
+}
+
+// =========================
+// BrowseHeaderSection
+// =========================
 interface BrowseHeaderSectionProps {
   pageTitle: string;
 }
 export const BrowseHeaderSection: React.FC<BrowseHeaderSectionProps> = ({ pageTitle }) => (
-  <h1>{pageTitle}</h1> // Assuming this is the "事業所を探す" title
+  <h1>{pageTitle}</h1>
 );
 
-// Sub-component: BrowseSearchSection
+// =========================
+// BrowseSearchSection
+// =========================
 interface BrowseSearchSectionProps {
   searchQuery: string;
   onSearchQueryChange: (query: string) => void;
   selectedService: string;
   onSelectedServiceChange: (service: string) => void;
-  selectedLocation: string; // This is Prefecture
-  onSelectedLocationChange: (location: string) => void; // This is Prefecture
-  cityQuery: string; // New prop
-  onCityQueryChange: (query: string) => void; // New prop
+  selectedLocation: string; // Prefecture
+  onSelectedLocationChange: (location: string) => void; // Prefecture
+  cityQuery: string;
+  onCityQueryChange: (query: string) => void;
   selectedWeekday: 'all' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
   onSelectedWeekdayChange: (weekday: 'all' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun') => void;
   services: string[];
-  locations: string[]; // This is JAPANESE_PREFECTURES
+  locations: string[];
 }
+
 export const BrowseSearchSection: React.FC<BrowseSearchSectionProps> = ({
-  searchQuery, onSearchQueryChange, selectedService, onSelectedServiceChange,
-  selectedLocation, onSelectedLocationChange, cityQuery, onCityQueryChange, // Added cityQuery props
-  selectedWeekday, onSelectedWeekdayChange,
-  services, locations
+  searchQuery,
+  onSearchQueryChange,
+  selectedService,
+  onSelectedServiceChange,
+  selectedLocation,
+  onSelectedLocationChange,
+  cityQuery,
+  onCityQueryChange,
+  selectedWeekday,
+  onSelectedWeekdayChange,
+  services,
+  locations,
 }) => (
   <div className="filter-section">
-    {/* New wrapper div for the 2:1:1 grid */}
-    <div className="browse-main-search-row"> {/* New class for CSS Grid */}
-      {/* Keyword Input (2fr) */}
+    <div className="browse-main-search-row">
       <div className="search-bar">
         <input
           type="text"
@@ -46,49 +68,65 @@ export const BrowseSearchSection: React.FC<BrowseSearchSectionProps> = ({
         />
       </div>
 
-      {/* Prefecture Dropdown (1fr) */}
       <div className="filter-group">
-        <label>地域</label> {/* Label change from エリア to 地域 */}
-        <select
-          value={selectedLocation}
-          onChange={(e) => onSelectedLocationChange(e.target.value)}
-        >
-          <option value="all">すべての地域</option> {/* Placeholder change */}
-          {locations.map(location => (
-            <option key={location} value={location}>{location}</option>
+        <label>地域</label>
+        <select value={selectedLocation} onChange={(e) => onSelectedLocationChange(e.target.value)}>
+          <option value="all">すべての地域</option>
+          {locations.map((location) => (
+            <option key={location} value={location}>
+              {location}
+            </option>
           ))}
         </select>
       </div>
 
-      {/* Service Type Dropdown (1fr) */}
       <div className="filter-group">
         <label>サービス種別</label>
-        <select
-          value={selectedService}
-          onChange={(e) => onSelectedServiceChange(e.target.value)}
-        >
+        <select value={selectedService} onChange={(e) => onSelectedServiceChange(e.target.value)}>
           <option value="all">すべての種別</option>
-          {services.map(service => (
-            <option key={service} value={service}>{service}</option>
+          {services.map((service) => (
+            <option key={service} value={service}>
+              {service}
+            </option>
           ))}
         </select>
       </div>
-    </div> {/* End browse-main-search-row */}
+    </div>
 
-    {/* Weekday filter remains */}
-    <div className="filter-options"> {/* This div now only contains weekday filter */}
+    {/* cityQuery（詳細検索） */}
+    <div className="filter-options">
+      <div className="filter-group">
+        <label>市区町村で絞り込む</label>
+        <input
+          type="text"
+          placeholder="例: 世田谷区 / 横浜市 / 札幌市..."
+          value={cityQuery}
+          onChange={(e) => onCityQueryChange(e.target.value)}
+        />
+      </div>
+
       <div className="filter-group">
         <label>曜日で絞り込む</label>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {[
-            ['all', 'すべて'], ['mon', '月'], ['tue', '火'], ['wed', '水'], ['thu', '木'], ['fri', '金'], ['sat', '土'], ['sun', '日']
+            ['all', 'すべて'],
+            ['mon', '月'],
+            ['tue', '火'],
+            ['wed', '水'],
+            ['thu', '木'],
+            ['fri', '金'],
+            ['sat', '土'],
+            ['sun', '日'],
           ].map(([k, label]) => (
             <button
               key={k}
               onClick={() => onSelectedWeekdayChange(k as BrowseSearchSectionProps['selectedWeekday'])}
               className={selectedWeekday === k ? 'btn btn-primary' : 'btn btn-ghost'}
               style={{ padding: '6px 10px' }}
-            >{label}</button>
+              type="button"
+            >
+              {label}
+            </button>
           ))}
         </div>
       </div>
@@ -96,113 +134,115 @@ export const BrowseSearchSection: React.FC<BrowseSearchSectionProps> = ({
   </div>
 );
 
-// Sub-component: BrowseHistorySection (only search history part)
+// =========================
+// BrowseHistorySection
+// =========================
 interface BrowseHistorySectionProps {
   searchHistory: string[];
   onClearSearchHistory: () => void;
   onApplySearchQuery: (query: string) => void;
 }
 export const BrowseHistorySection: React.FC<BrowseHistorySectionProps> = ({
-  searchHistory, onClearSearchHistory, onApplySearchQuery
+  searchHistory,
+  onClearSearchHistory,
+  onApplySearchQuery,
 }) => (
-  <div className="search-history-container"> {/* New wrapper div */}
+  <div className="search-history-container">
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
       <strong>検索履歴</strong>
-      <button className="btn btn-ghost" onClick={onClearSearchHistory}>クリア</button>
+      <button className="btn btn-ghost" onClick={onClearSearchHistory} type="button">
+        クリア
+      </button>
     </div>
     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 6 }}>
-      {searchHistory.length === 0 ? <span className="muted">履歴はありません</span> : searchHistory.slice(0, 5).map((h, i) => ( // slice(0,5) applied
-        <button key={i} className="btn btn-ghost" onClick={() => onApplySearchQuery(h)}>{h}</button>
-      ))}
+      {searchHistory.length === 0 ? (
+        <span className="muted">履歴はありません</span>
+      ) : (
+        searchHistory.slice(0, 5).map((h, i) => (
+          <button key={i} className="btn btn-ghost" onClick={() => onApplySearchQuery(h)} type="button">
+            {h}
+          </button>
+        ))
+      )}
     </div>
   </div>
 );
 
-// Sub-component: BrowseSavedSearchSection (only saved searches part)
+// =========================
+// BrowseSavedSearchSection
+// =========================
+interface SavedSearch {
+  id: string;
+  name: string;
+  filters: {
+    searchQuery: string;
+    selectedService: string;
+    selectedLocation: string;
+    selectedWeekday: 'all' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+    cityQuery?: string; // 既存データ互換
+  };
+  facilityIds: number[];
+  createdAt: string;
+}
+
 interface BrowseSavedSearchSectionProps {
-  savedSearches: {
-    id: string;
-    name: string;
-    filters: {
-      searchQuery: string;
-      selectedService: string;
-      selectedLocation: string;
-      selectedWeekday: 'all' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
-    };
-    facilityIds: number[];
-    createdAt: string;
-  }[];
+  savedSearches: SavedSearch[];
   onSaveCurrentSearch: () => void;
-  onApplySavedSearch: (search: {
-    id: string;
-    name: string;
-    filters: {
-      searchQuery: string;
-      selectedService: string;
-      selectedLocation: string;
-      selectedWeekday: 'all' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
-    };
-    facilityIds: number[];
-    createdAt: string;
-  }) => void;
+  onApplySavedSearch: (search: SavedSearch) => void;
   onDeleteSavedSearch: (id: string) => void;
 }
+
 export const BrowseSavedSearchSection: React.FC<BrowseSavedSearchSectionProps> = ({
-  savedSearches, onSaveCurrentSearch, onApplySavedSearch, onDeleteSavedSearch
+  savedSearches,
+  onSaveCurrentSearch,
+  onApplySavedSearch,
+  onDeleteSavedSearch,
 }) => (
-  <div className="saved-search-container"> {/* New wrapper div */}
+  <div className="saved-search-container">
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12 }}>
       <strong>保存検索</strong>
-      <button className="btn btn-primary" onClick={onSaveCurrentSearch}>この検索を保存</button>
+      <button className="btn btn-primary" onClick={onSaveCurrentSearch} type="button">
+        この検索を保存
+      </button>
     </div>
+
     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 6 }}>
-      {savedSearches.length === 0 ? <span className="muted">保存された検索はありません</span> : savedSearches.map(s => (
-        <div key={s.id} className="saved-search-card">
-          <div className="saved-search-name">{s.name}</div>
-          <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
-            <button className="btn btn-ghost" onClick={() => onApplySavedSearch(s)}>適用</button>
-            <button className="btn btn-ghost" onClick={() => onDeleteSavedSearch(s.id)}>削除</button>
+      {savedSearches.length === 0 ? (
+        <span className="muted">保存された検索はありません</span>
+      ) : (
+        savedSearches.map((s) => (
+          <div key={s.id} className="saved-search-card">
+            <div className="saved-search-name">{s.name}</div>
+            <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
+              <button className="btn btn-ghost" onClick={() => onApplySavedSearch(s)} type="button">
+                適用
+              </button>
+              <button className="btn btn-ghost" onClick={() => onDeleteSavedSearch(s.id)} type="button">
+                削除
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   </div>
 );
 
-// Wrapper for combining search history and saved searches side-by-side
+// =========================
+// BrowseSearchHistoryAndSavedRow
+// =========================
 interface BrowseSearchHistoryAndSavedRowProps {
   searchHistory: string[];
   onClearSearchHistory: () => void;
   onApplySearchQuery: (query: string) => void;
-  savedSearches: {
-    id: string;
-    name: string;
-    filters: {
-      searchQuery: string;
-      selectedService: string;
-      selectedLocation: string;
-      selectedWeekday: 'all' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
-    };
-    facilityIds: number[];
-    createdAt: string;
-  }[];
+  savedSearches: SavedSearch[];
   onSaveCurrentSearch: () => void;
-  onApplySavedSearch: (search: {
-    id: string;
-    name: string;
-    filters: {
-      searchQuery: string;
-      selectedService: string;
-      selectedLocation: string;
-      selectedWeekday: 'all' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
-    };
-    facilityIds: number[];
-    createdAt: string;
-  }) => void;
+  onApplySavedSearch: (search: SavedSearch) => void;
   onDeleteSavedSearch: (id: string) => void;
 }
+
 export const BrowseSearchHistoryAndSavedRow: React.FC<BrowseSearchHistoryAndSavedRowProps> = (props) => (
-  <div className="browse-secondary-row container"> {/* Added container class for width */}
+  <div className="browse-secondary-row container">
     <BrowseHistorySection
       searchHistory={props.searchHistory}
       onClearSearchHistory={props.onClearSearchHistory}
@@ -217,14 +257,14 @@ export const BrowseSearchHistoryAndSavedRow: React.FC<BrowseSearchHistoryAndSave
   </div>
 );
 
-// Sub-component: BrowseResultsSection
+// =========================
+// BrowseResultsSection
+// =========================
 interface BrowseResultsSectionProps {
   filteredFacilitiesCount: number;
 }
 export const BrowseResultsSection: React.FC<BrowseResultsSectionProps> = ({ filteredFacilitiesCount }) => (
-  // "事業所一覧" の文字を「10件の事業所が見つかりました（件数表示）」の上に表示する。
   <div className="results-info">
-    {/* Heading added here */}
     <h2 style={{ textAlign: 'center', fontSize: '44px' }}>事業所一覧</h2>
     <div className="availability-legend">
       <span>凡例:</span>
@@ -236,21 +276,21 @@ export const BrowseResultsSection: React.FC<BrowseResultsSectionProps> = ({ filt
   </div>
 );
 
-
-// Sub-component: BrowseListSection
+// =========================
+// BrowseListSection  ← ここが “一覧の NO IMAGE を消す本体”
+// =========================
 interface BrowseListSectionProps {
   loading: boolean;
   filteredFacilities: Facility[];
   onSelectFacility: (facilityId: number) => void;
 }
+
 export const BrowseListSection: React.FC<BrowseListSectionProps> = ({
-  loading, filteredFacilities, onSelectFacility
+  loading,
+  filteredFacilities,
+  onSelectFacility,
 }) => {
-  if (loading) {
-    return (
-      <div className="loading">読み込み中...</div>
-    );
-  }
+  if (loading) return <div className="loading">読み込み中...</div>;
 
   if (filteredFacilities.length === 0) {
     return (
@@ -262,88 +302,112 @@ export const BrowseListSection: React.FC<BrowseListSectionProps> = ({
 
   return (
     <div className="facilities-list">
-      {filteredFacilities.map(f => (
-        <div key={f.id} className="card facility-card" onClick={() => onSelectFacility(f.id)}>
-          <div className="facility-card-image-wrapper">
-            {f.imageUrl ? (
+      {filteredFacilities.map((f) => {
+        const src = resolveImageSrc(f.imageUrl);
+
+        return (
+          <div
+            key={f.id}
+            className="card facility-card"
+            onClick={() => onSelectFacility(f.id)}
+          >
+            <div className="facility-card-image-wrapper">
               <img
-                src={f.imageUrl}
+                src={src}
                 alt={f.name}
                 className="facility-card-image"
+                loading="lazy"
                 onError={(e) => {
-                  const imgElement = e.target as HTMLImageElement;
-                  imgElement.onerror = null;
-                  imgElement.style.display = 'none'; // Hide broken image
+                  const img = e.currentTarget;
+
+                  if (img.getAttribute('data-fallback') === '1') return;
+
+                  console.error('[FacilityImage] load failed -> fallback', {
+                    facilityId: f.id,
+                    facilityName: f.name,
+                    originalSrc: src,
+                    imageUrl: f.imageUrl,
+                  });
+
+                  img.setAttribute('data-fallback', '1');
+                  img.src = FALLBACK_SRC;
                 }}
               />
-            ) : (
-              <div className="no-image-placeholder">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-                <span>NO IMAGE</span>
+            </div>
+
+            <div className="card-body">
+              <h3 className="facility-name">{f.name}</h3>
+              <p className="facility-meta-info">{f.location}</p>
+
+              <div className="facility-tags">
+                <span className="tag-badge">{f.serviceType}</span>
               </div>
-            )}
-          </div>
-          <div className="card-body">
-            <h3 className="facility-name">{f.name}</h3>
-            <p className="facility-meta-info">{f.location}</p>
 
-            <div className="facility-tags">
-              <span className="tag-badge">{f.serviceType}</span>
+              <div className="facility-availability">
+                <AvailabilityBadges availability={f.availability} />
+              </div>
+
+              <span className="details-link">詳細を見る</span>
             </div>
-
-            <div className="facility-availability">
-              <AvailabilityBadges availability={f.availability} />
-            </div>
-
-            <span className="details-link">詳細を見る</span>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
 
-// Sub-component: BrowseDetailSection (equivalent to FacilityDetailView)
+// =========================
+// BrowseDetailSection  ← これが export されてないと Browse.tsx が死ぬ
+// =========================
 interface BrowseDetailSectionProps {
   facility: Facility;
   isFavorite: boolean;
   onToggleFavorite: (facilityId: number) => void;
   onBackToList: () => void;
 }
+
 export const BrowseDetailSection: React.FC<BrowseDetailSectionProps> = ({
-  facility, isFavorite, onToggleFavorite, onBackToList
+  facility,
+  isFavorite,
+  onToggleFavorite,
+  onBackToList,
 }) => {
   const availability = facility.availability;
+
   return (
-    <div className="browse-page"> {/* Retain the top-level wrapper from original */}
+    <div className="browse-page">
       <div className="facility-detail-page">
         <div className="detail-container">
-          <button
-            className="back-button"
-            onClick={onBackToList}
-          >
+          <button className="back-button" onClick={onBackToList} type="button">
             ← 一覧に戻る
           </button>
 
-          {/* 画像セクション */}
           <div className="facility-image-section">
             <img
-              src={facility.imageUrl || '/no-image.svg'}
+              src={resolveImageSrc(facility.imageUrl)}
               alt={facility.name}
               className="facility-main-image"
               onError={(e) => {
-                const imgElement = e.target as HTMLImageElement;
-                if (imgElement.src.endsWith('/no-image.svg')) {
-                  return;
-                }
-                imgElement.onerror = null;
-                imgElement.src = '/no-image.svg';
+                const img = e.currentTarget;
+                if (img.getAttribute('data-fallback') === '1') return;
+
+                console.error('[FacilityImage:detail] load failed -> fallback', {
+                  facilityId: facility.id,
+                  facilityName: facility.name,
+                  originalSrc: img.src,
+                  imageUrl: facility.imageUrl,
+                });
+
+                img.setAttribute('data-fallback', '1');
+                img.src = FALLBACK_SRC;
               }}
             />
+
             <button
               className={`favorite-button ${isFavorite ? 'active' : ''}`}
               onClick={() => onToggleFavorite(facility.id)}
               title={isFavorite ? 'お気に入りから削除' : 'お気に入りに追加'}
+              type="button"
             >
               {isFavorite ? '❤️' : '♡'}
             </button>
@@ -357,7 +421,6 @@ export const BrowseDetailSection: React.FC<BrowseDetailSectionProps> = ({
             </div>
           </div>
 
-          {/* 営業時間表示 (DBのavailabilityをそのまま利用) */}
           {availability && (
             <div className="availability-section">
               <h3>営業時間</h3>
@@ -387,6 +450,7 @@ export const BrowseDetailSection: React.FC<BrowseDetailSectionProps> = ({
                 <label>メールアドレス</label>
                 <p>{facility.email || '未設定'}</p>
               </div>
+
               {facility.website && (
                 <div className="info-item">
                   <label>ウェブサイト</label>
@@ -398,10 +462,12 @@ export const BrowseDetailSection: React.FC<BrowseDetailSectionProps> = ({
                 </div>
               )}
             </div>
+
             <div className="description">
               <h3>について</h3>
               <p>{facility.description}</p>
             </div>
+
             <div className="cta-section">
               <Link to="/register" className="btn btn-primary btn-large">
                 この事業所に問い合わせる

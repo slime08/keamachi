@@ -128,6 +128,18 @@ export default function FacilityDetail({ facilityId, onBack }: FacilityDetailPro
 
       <div className="detail-header-section">
         <h1>{facility.name}</h1>
+        {/* こんな方におすすめセクション */}
+        <div className="recommendation-section">
+          <h3>こんな方におすすめ</h3>
+          <div className="recommendation-tags">
+            {facility.pcWorkAvailable && <span className="tag-chip">PC作業がしたい方</span>}
+            {facility.shuttleService && <span className="tag-chip">送迎が必要な方</span>}
+            {facility.trialBookingAvailable && <span className="tag-chip">見学から始めたい方</span>}
+            {facility.lunchProvided && <span className="tag-chip">昼食が必要な方</span>}
+            {facility.capacity && parseInt(facility.capacity) < 20 && <span className="tag-chip">少人数制が良い方</span>}
+            {/* Add more based on other relevant facility properties */}
+          </div>
+        </div>
         <div className="rating">
           <span className="stars">⭐{facility.rating}</span>
           <span className="review-count">レビュー {facility.reviews}件</span>
@@ -143,22 +155,25 @@ export default function FacilityDetail({ facilityId, onBack }: FacilityDetailPro
 
       {error && <div className="error-message">{error}</div>}
 
+      {/* 新しい特徴セクション */}
+      <section className="features-section">
+        <h2>事業所の特徴</h2>
+        <div className="feature-tags-grid">
+          <span className="tag-chip primary-chip">{facility.serviceType}</span>
+          {facility.operatingDays && facility.operatingDays.length > 0 &&
+            <span className="tag-chip">対応曜日: {facility.operatingDays.join('・')}</span>}
+          {facility.capacity && <span className="tag-chip">定員: {facility.capacity}名</span>}
+          {facility.shuttleService && <span className="tag-chip">送迎あり</span>}
+          {facility.lunchProvided && <span className="tag-chip">昼食提供あり</span>}
+          {facility.trialBookingAvailable && <span className="tag-chip">見学予約可</span>}
+          {facility.pcWorkAvailable && <span className="tag-chip">PC作業設備あり</span>}
+        </div>
+      </section>
+
       <div className="detail-content">
         <section className="info-section">
           <h2>基本情報</h2>
           <div className="info-grid">
-            <div className="info-item">
-              <label>サービス種別</label>
-              <p>{facility.serviceType}</p>
-            </div>
-            <div className="info-item">
-              <label>所在地</label>
-              <p>{facility.location}</p>
-            </div>
-            <div className="info-item">
-              <label>定員</label>
-              <p>{facility.capacity || '未設定'}</p>
-            </div>
             <div className="info-item">
               <label>電話番号</label>
               <p>{facility.phone || '未設定'}</p>
@@ -204,13 +219,13 @@ export default function FacilityDetail({ facilityId, onBack }: FacilityDetailPro
 
         <div className="action-buttons">
           <button
-            className="apply-button"
-            onClick={handleApplyMatch}
+            className="btn btn-primary btn-large" // Apply primary style
+            onClick={handleApplyMatch} // Reuse existing handleApplyMatch logic for primary CTA
             disabled={loading}
           >
-            {loading ? '送信中...' : 'マッチングを申請'}
+            {loading ? '送信中...' : '見学を申し込む'}
           </button>
-          <button className="contact-button">お問い合わせ</button>
+          <button className="btn btn-secondary btn-large">質問する</button> {/* New secondary CTA */}
         </div>
 
         <section className="reviews-section">

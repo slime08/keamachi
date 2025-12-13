@@ -1,3 +1,4 @@
+// client/src/App.tsx
 import { useEffect } from 'react'
 import api from './api';
 import { Routes, Route, Navigate } from 'react-router-dom' // Removed BrowserRouter as Router

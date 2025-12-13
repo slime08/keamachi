@@ -1172,11 +1172,97 @@ body {
   font-weight: 500;
 }
 
+/* =========================================
+   Action Bar (Back button / Favorite)
+   共通UI：一覧・詳細どちらでも使う
+========================================= */
+
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* 一覧に戻る */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(8,166,111,0.25);
+
+  background: rgba(8,166,111,0.06); /* 薄緑 */
+  color: var(--primary);
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: rgba(8,166,111,0.12);
+  border-color: rgba(8,166,111,0.45);
+}
+
+/* お気に入り（ハート） */
+.favorite-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(8,166,111,0.25);
+  background: rgba(255,255,255,0.6);
+
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  color: var(--primary); /* ← グレーにしない */
+  transition: all 0.2s ease;
+}
+
+.favorite-button:hover {
+  background: rgba(8,166,111,0.10);
+  border-color: rgba(8,166,111,0.45);
+}
+
+.favorite-button.active {
+  color: #ff6b6b;
+
+  background: rgba(255,107,107,0.12);
+  border-color: rgba(255,107,107,0.45);
+
+  box-shadow: 0 6px 14px rgba(255,107,107,0.25);
+}
+
+/* 詳細ページ全体を白いカードに */
+.facility-detail-page {
+  background: var(--bg-1); /* 今の淡い緑は外側に */
+  padding: 32px 0;
+}
+
+.detail-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;        /* ← 白 */
+  border-radius: 20px;        /* ← 角丸 */
+  padding: 28px;
+  box-shadow: 0 18px 50px rgba(15, 70, 50, 0.12);
+  border: 1px solid var(--border);
+}
+
 /* Facility Detail Page Image */
 .facility-image-section {
   width: 100%;
   overflow: hidden;
-  border-radius: var(--radius); /* Apply border-radius from theme */
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .facility-main-image {
@@ -1305,6 +1391,113 @@ body {
 .footer-section {
   /* Ensure footer sections take full width on mobile/flex properly */
   min-width: 150px; /* Prevent sections from becoming too narrow */
+}
+
+/* Warning Message (User Registration) */
+.warning-message {
+  background-color: #fff3cd; /* Light yellow */
+  border-left: 5px solid #ffc107; /* Darker yellow border */
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  color: #664d03;
+  border-radius: var(--radius);
+  font-size: 0.9em;
+}
+.warning-message p {
+  margin: 0;
+}
+
+/* Radio and Checkbox Groups (User & Facility Registration) */
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+.radio-group label, .checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background-color: var(--bg-1);
+}
+.radio-group label:hover, .checkbox-group label:hover {
+  border-color: var(--primary);
+  background-color: var(--glass);
+}
+.radio-group input[type="radio"], .checkbox-group input[type="checkbox"] {
+  accent-color: var(--primary);
+  transform: scale(1.1);
+}
+.radio-group input[type="radio"]:checked + span,
+.checkbox-group input[type="checkbox"]:checked + span {
+  color: var(--primary);
+  font-weight: 700;
+}
+/* For checkbox items to appear more like tags */
+.checkbox-item {
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+/* Recommendation Section (`recommendation-section`) & Tags (`tag-chip`) (Detail Page) */
+.recommendation-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--bg-1);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.recommendation-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-size: 1.1em;
+  font-weight: 700;
+}
+.recommendation-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px; /* Pill shape */
+  background-color: var(--glass);
+  color: var(--primary);
+  font-size: 0.85em;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid rgba(8, 166, 111, 0.1);
+}
+.tag-chip.primary-chip {
+    background: linear-gradient(120deg, var(--primary), var(--primary-600));
+    color: white;
+    box-shadow: 0 4px 10px rgba(8,166,111,0.1);
+}
+
+/* Features Section (`features-section`) & Tags (`feature-tags-grid`) (Detail Page) */
+.features-section {
+  margin-top: 30px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+}
+.features-section h2 {
+  font-size: 1.5em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--text);
+}
+.feature-tags-grid {
+  display: flex; /* Use flex for horizontal wrapping */
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 
